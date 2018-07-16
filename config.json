@@ -1,0 +1,10 @@
+{
+    "prefix": "!",
+    "token": "NDY4MzYwOTEwOTI3NTYwNzA1.Di4Dhw.FaKYweNINCElzoeI9YMIlajNv7w",
+    "meaning_of_life": 42,
+    "passwords_array": ["please", "be", "good", "at", "coding"],
+    "secret_passcodes": {
+        "arsenal": 1234,
+        "gold bank": 1111
+    }
+}
