@@ -1,5 +1,6 @@
 module.exports = {
     name: 'avatar',
+    aliases: ['icon', 'logo'],
     description: 'display the image and url of users\' avatar',
     execute(message, args) {
         if (!message.mentions.users.size) {
