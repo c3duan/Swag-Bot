@@ -1,3 +1,5 @@
+'use strict';
+
 const mimes = require('./mimes.json');
 const mimeOfBuffer = require('./mimeOfBuffer.js');
 
