@@ -1,0 +1,17 @@
+{
+  "browser": true,
+  "curly": true,
+  "devel": true,
+  "eqeqeq": true,
+  "esversion": 6,
+  "freeze": true,
+  "latedef": true,
+  "noarg": true,
+  "node": true,
+  "undef": true,
+  "unused": true,
+  "globals": {
+    "Polymer": true,
+    "XP": true
+  }
+}

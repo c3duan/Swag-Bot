@@ -1,4 +1,4 @@
-const api = 'http://jsonplaceholder.typicode.com/posts';
+const test_api = 'http://jsonplaceholder.typicode.com/posts';
 const snekfetch = require('snekfetch');
 const Discord = require('discord.js');
 
@@ -7,8 +7,8 @@ module.exports = {
     description: 'Simple web JSON API Testing',
     usage: 'json <ID> <speak>',
     cooldown: 5,
-    execute(client, message, args) {
-        snekfetch.get(api).then(r => {
+    execute(client, api, config, message, args) {
+        snekfetch.get(test_api).then(r => {
             // store all info in the array body
             const body = r.body;
             const id = Number(args[0]);

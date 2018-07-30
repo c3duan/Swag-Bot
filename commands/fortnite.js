@@ -5,7 +5,7 @@ module.exports = {
     description: 'Returns Fortnite statistics for a player',
     usage: 'fortnite <player name>',
     cooldown: 5,
-    execute(client, message, args) {
+    execute(client, api, config, message, args) {
         try {
             const config = require('../config.json');
 
@@ -26,17 +26,17 @@ module.exports = {
                     const stats = JSON.parse(body);
 
                     try {
-
                         // Formats the statistics into an embed to return to the user
                         const statsText = new Discord.RichEmbed()
                             .setColor(3447003)
-                            .setAuthor(stats.displayName)
-                            .addField(':trophy: Victory Royales: ' + stats.br.stats.pc.all.wins)
-                            .addField(':chart_with_upwards_trend: Win Rate: ' + stats.br.stats.pc.all.winRate + '%')
-                            .addField(':gun: Kills: ' + stats.br.stats.pc.all.kills)
-                            .addField(':skull: Deaths: ' + stats.br.stats.pc.all.deaths)
-                            .addField(':black_heart: K/D: ' + stats.br.stats.pc.all.kpd)
-                            .addField(':clock1: Time played' + stats.br.stats.pc.all.minutesPlayed + 'minutes')
+                            .setTitle(stats.displayName)
+                            .addBlankField(true)
+                            .addField(':trophy: Victory Royales', stats.br.stats.pc.all.wins)
+                            .addField(':chart_with_upwards_trend: Win Rate:', stats.br.stats.pc.all.winRate + '%')
+                            .addField(':gun: Kills', stats.br.stats.pc.all.kills)
+                            .addField(':skull: Deaths', stats.br.stats.pc.all.deaths)
+                            .addField(':black_heart: K/D', stats.br.stats.pc.all.kpd)
+                            .addField(':clock1: Time played', stats.br.stats.pc.all.minutesPlayed + ' minutes')
                             .setTimestamp(new Date())
                             .setFooter('Fortnite Battle Royale');
 

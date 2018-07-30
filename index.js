@@ -1,7 +1,16 @@
-const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+const fs = require('fs');
+const config = require('./config.json');
+const chalk = require('chalk');
+const RiotApi = require('lol-stats-api-module');
+
+// create a new riot api
+const api = new RiotApi({
+    key: config.riot_api_key,
+    region: config.riot_api_region,
+});
+
 // create a new discord client
 const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
@@ -21,11 +30,39 @@ for (const file of commandFlies) {
 // - finishes logging in
 // - reconnects after disconnecting
 client.on('ready', () => {
+
+    // connect to the riot api
+    api.getVersionsStaticData({ region: 'na' }, (err, data) => {
+        const success = chalk.green;
+        const error = chalk.red;
+        const neutral = chalk.gray;
+
+        const file_content = fs.readFileSync('./config.json', 'utf-8');
+        const jsonObj = JSON.parse(file_content);
+
+        // Check if version defined in config.json is even with one in api callback.
+        if (jsonObj.riot_api_version !== data) {
+            // Write actual version.
+            jsonObj.riot_api_version = data;
+            fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
+                // Save it to the configuration file.
+                if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
+                else console.log(error('Couldn\'t ') + 'update ' + neutral('configuration file') + ' with latest Riot Api version.');
+            });
+        }
+        if (!err) {
+            console.log(success('Estabilished ') + 'connection with Riot Api v-' + neutral(data));
+        }
+        else {
+            console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
+        }
+    });
+
     console.log('Ready!');
 });
 
 client.on('message', message => {
-    const args = message.content.slice(prefix.length).split(/ +/);
+    const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) ||
@@ -37,7 +74,7 @@ client.on('message', message => {
         let reply = `You didn't provide any arguments, ${message.author}!`;
 
         if (command.usage) {
-            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+            reply += `\nThe proper usage would be: \`${config.prefix}${command.name} ${command.usage}\``;
         }
 
         return message.channel.send(reply);
@@ -71,7 +108,7 @@ client.on('message', message => {
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
     try {
-        command.execute(client, message, args);
+        command.execute(client, api, config, message, args);
     }
     catch (error) {
         console.error(error);
@@ -80,4 +117,4 @@ client.on('message', message => {
 });
 
 // login to Discord with your app's token
-client.login(token);
+client.login(config.token);

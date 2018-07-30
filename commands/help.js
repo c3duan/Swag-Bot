@@ -6,7 +6,7 @@ module.exports = {
     aliases: ['command'],
     usage: '[command name]',
     cooldown: 5,
-    execute(client, message, args) {
+    execute(client, api, config, message, args) {
         const data = [];
         const { commands } = message.client;
 
@@ -15,7 +15,7 @@ module.exports = {
             data.push(commands.map(command => command.name).join(', '));
             data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-            return message.author.send(data, { split: true }) 
+            return message.author.send(data, { split: true })
                 .then(() => {
                     if (message.channel.type == 'dm') return;
                     message.reply('I\'ve sent you a DM with all my commands!');
@@ -37,7 +37,7 @@ module.exports = {
 
 		if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
 		if (command.description) data.push(`**Description:** ${command.description}`);
-		if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
+		if (command.usage) data.push(`**Usage:** ${prefix}${command.usage}`);
 
 		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
 
