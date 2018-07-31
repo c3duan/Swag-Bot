@@ -2,7 +2,7 @@
     "prefix": "!",
     "token": "NDY4MzYwOTEwOTI3NTYwNzA1.Di4Dhw.FaKYweNINCElzoeI9YMIlajNv7w",
     "fortnite": "mRVn0kzF3WCEbmgaMUt7",
-    "riot_api_key": "RGAPI-f9dd168b-84a6-47ab-89d3-f001c14e8d12",
+    "riot_api_key": "your riot api key",
     "riot_api_region": "na",
     "lol_champ_json": "http://ddragon.leagueoflegends.com/cdn/8.2.1/data/en_US/champion.json",
     "weather": "fa28676a2df1df6a1ccd6efca1bce9d1",
@@ -14,10 +14,6 @@
         "at",
         "coding"
     ],
-    "secret_passcodes": {
-        "arsenal": 1234,
-        "gold bank": 1111
-    },
     "riot_api_version": [
         "8.14.1",
         "8.13.1",

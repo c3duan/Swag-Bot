@@ -61,6 +61,36 @@ client.on('ready', () => {
     console.log('Ready!');
 });
 
+const events = {
+	MESSAGE_REACTION_ADD: 'messageReactionAdd',
+	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+};
+
+client.on('raw', async event => {
+	if (!events.hasOwnProperty(event.t)) return;
+
+	const { d: data } = event;
+	const user = client.users.get(data.user_id);
+	const channel = client.channels.get(data.channel_id) || await user.createDM();
+
+	if (channel.messages.has(data.message_id)) return;
+
+	const message = await channel.messages.fetch(data.message_id);
+	const emojiKey = data.emoji.id || data.emoji.name;
+	const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+
+	client.emit(events[event.t], reaction, user);
+	if (message.reactions.size === 1) message.reactions.delete(emojiKey);
+});
+
+client.on('messageReactionAdd', (reaction, user) => {
+	console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+});
+
+client.on('messageReactionRemove', (reaction, user) => {
+	console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
+});
+
 client.on('message', message => {
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();

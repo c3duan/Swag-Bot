@@ -64,10 +64,10 @@ module.exports = {
                             .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[0].key}.png`)
                             .setDescription(data.spells[0].description)
                             .addField('Tips', data.spells[0].sanitizedTooltip)
-                            .addField('Cost', data.spells[0].cost.toString())
-                            .addField('Cool Down', data.spells[0].cooldown.toString())
-                            .addField('Effect', data.spells[0].effect.toString())
-                            .addField('Range', data.spells[0].range.toString())
+                            .addField('Cost', data.spells[0].costBurn)
+                            .addField('Cool Down', data.spells[0].cooldownBurn)
+                            .addField('Effect', data.spells[0].effectBurn)
+                            .addField('Range', data.spells[0].rangeBurn)
                             .setFooter(`${data.name} Q: ${data.spells[0].name}`);
 
                         message.channel.send(qText);
@@ -80,10 +80,10 @@ module.exports = {
                             .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[1].key}.png`)
                             .setDescription(data.spells[1].description)
                             .addField('Tips', data.spells[1].sanitizedTooltip)
-                            .addField('Cost', data.spells[1].cost.toString())
-                            .addField('Cool Down', data.spells[1].cooldown.toString())
-                            .addField('Effect', data.spells[1].effect.toString())
-                            .addField('Range', data.spells[1].range.toString())
+                            .addField('Cost', data.spells[1].costBurn)
+                            .addField('Cool Down', data.spells[1].cooldownBurn)
+                            .addField('Effect', data.spells[1].effectBurn)
+                            .addField('Range', data.spells[1].rangeBurn)
                             .setFooter(`${data.name} W: ${data.spells[1].name}`);
 
                         message.channel.send(wText);
@@ -96,10 +96,10 @@ module.exports = {
                             .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[2].key}.png`)
                             .setDescription(data.spells[2].description)
                             .addField('Tips', data.spells[2].sanitizedTooltip)
-                            .addField('Cost', data.spells[2].cost.toString())
-                            .addField('Cool Down', data.spells[2].cooldown.toString())
-                            .addField('Effect', data.spells[2].effect.toString())
-                            .addField('Range', data.spells[2].range.toString())
+                            .addField('Cost', data.spells[2].costBurn)
+                            .addField('Cool Down', data.spells[2].cooldownBurn)
+                            .addField('Effect', data.spells[2].effectBurn)
+                            .addField('Range', data.spells[2].rangeBurn)
                             .setFooter(`${data.name} E: ${data.spells[2].name}`);
 
                         message.channel.send(eText);
@@ -112,10 +112,10 @@ module.exports = {
                             .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[3].key}.png`)
                             .setDescription(data.spells[3].description)
                             .addField('Tips', data.spells[3].sanitizedTooltip)
-                            .addField('Cost', data.spells[3].cost.toString())
-                            .addField('Cool Down', data.spells[3].cooldown.toString())
-                            .addField('Effect', data.spells[3].effect.toString())
-                            .addField('Range', data.spells[3].range.toString())
+                            .addField('Cost', data.spells[3].costBurn)
+                            .addField('Cool Down', data.spells[3].cooldownBurn)
+                            .addField('Effect', data.spells[3].effectBurn)
+                            .addField('Range', data.spells[3].rangeBurn)
                             .setFooter(`${data.name} R: ${data.spells[3].name}`);
 
                         message.channel.send(rText);
@@ -141,10 +141,10 @@ module.exports = {
                                 .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[i].key}.png`)
                                 .setDescription(data.spells[i].description)
                                 .addField('Tips', data.spells[i].sanitizedTooltip)
-                                .addField('Cost', data.spells[i].cost.toString())
-                                .addField('Cool Down', data.spells[i].cooldown.toString())
-                                .addField('Effect', data.spells[i].effect.toString())
-                                .addField('Range', data.spells[i].range.toString())
+                                .addField('Cost', data.spells[i].costBurn)
+                                .addField('Cool Down', data.spells[i].cooldownBurn)
+                                .addField('Effect', data.spells[i].effectBurn)
+                                .addField('Range', data.spells[i].rangeBurn)
                                 .setFooter(`${data.name} ${keys[i]}: ${data.spells[i].name}`);
 
                             message.channel.send(spells);
