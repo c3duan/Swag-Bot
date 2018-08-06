@@ -4,6 +4,7 @@ const fs = require('fs');
 const config = require('./config.json');
 const chalk = require('chalk');
 const RiotApi = require('lol-stats-api-module');
+const mysql = require('mysql');
 
 // create a new riot api
 const api = new RiotApi({
@@ -24,6 +25,23 @@ for (const file of commandFlies) {
     // with the key as the command name and the value as the exported value
     client.commands.set(command.name, command);
 }
+
+// set up the mysql account info
+const con = mysql.createConnection({
+    host: config.mysql_host,
+    user: config.mysql_user,
+    password: config.mysql_password,
+    database: config.mysql_database,
+});
+
+// connect to mysql database
+con.connect(err => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to database!');
+    con.query('SHOW TABLES', console.log);
+});
 
 // when the client is ready, run this code
 // this event will trigger whenever your bot:

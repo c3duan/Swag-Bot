@@ -5,6 +5,17 @@ My first ever discord bot using discord.js
 - Node.js
 - Discord.js
 
+## API
+- riot api
+- fortnite api
+- weather.com api
+- youtube api
+- dog api
+- dog facts api
+- cat api
+- cat facts api
+- translation api
+
 ## Command Trigger Prefix: !
 
 ## List of Commands
@@ -21,30 +32,38 @@ My first ever discord bot using discord.js
     - avatar
     - beep
     - ping
+    - poll
     - logan
 - meme
 - emojis
 - gaming stats
     - Fortnite
     - League of Legends
-        | lol-summoner
-        | lol-rank
-        | lol-champion
-        | lol-tips
-        | lol-ability
-        | lol-skin
-        | lol-match
+        - lol-summoner
+        - lol-rank
+        - lol-champion
+        - lol-tips
+        - lol-ability
+        - lol-skin
+        - lol-match
 - miscellaneous 
     - weather
-
-## Upcoming Commands
+- animal related
+    - dog
+    - dog facts
+    - cat
+    - cat facts
 - games
     - 8ball
+    - gamble/lottery
     - hangman
-    - poll
-    - dice
-    - lottery
+
+## Upcoming Commands
 - google search
 - youtube video/music playing
-- dog (special command)
+- spotify
+- image manipulation
+- fun language translation
+- my anime list
+
     
