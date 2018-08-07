@@ -4,7 +4,7 @@ module.exports = {
     name: 'play',
     description: 'plays a specific music from youtube',
     usage: 'play <music name>',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         if (message.channel.type !== 'text') return;
 
         const { voiceChannel } = message.member;

@@ -6,7 +6,7 @@ module.exports = {
     description: 'gives info about inquired champion ability',
     usage: 'lol-ability <Summoner Name> <ability P/p/passive or Q/q or W/w or E/e or R/r or A/a/all>',
     cooldown: 3,
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         if (args.length > 3 || args.legnth < 2) {
             return message.channel.send(`${this.usage}`);
         }

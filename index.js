@@ -43,6 +43,13 @@ con.connect(err => {
     con.query('SHOW TABLES', console.log);
 });
 
+function generateXp() {
+    const min = 10;
+    const max = 30;
+
+    return Math.floor(Math.random() * (max - min + 1));
+}
+
 // when the client is ready, run this code
 // this event will trigger whenever your bot:
 // - finishes logging in
@@ -110,6 +117,47 @@ client.on('messageReactionRemove', (reaction, user) => {
 });
 
 client.on('message', message => {
+    // retrieve the current user xp
+    con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
+        if (err) {
+            throw err;
+        }
+
+        let sql;
+        let newXP;
+        let first = -1;
+
+        if(rows.length < 1) {
+            sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${generateXp()})`;
+        }
+        else {
+            let xp = rows[0].xp;
+            newXP = xp + generateXp();
+            sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
+        }
+
+        con.query(sql);
+
+        if (newXP >= config.VIP * config.levelXP && !first) {
+            first = 1;
+
+            let VIProle = message.guild.roles.filter(role => role == 'VIP');
+
+            message.member.addRole(VIProle);
+
+            let VIPembed = new Discord.RichEmbed()
+                .setTitle('**Congratulations, you are offically a VIP!!!**')
+                .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+                .setThumbnail(`${message.author.displayAvatarURL}`)
+                .addField('XP', newXP, true)
+                .addField('Level', 'VIP', true)
+                .setTimestamp(new Date())
+                .setFooter('VIP Announcement');
+
+            message.channel.send(VIPembed);
+        }
+    });
+
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
@@ -156,7 +204,7 @@ client.on('message', message => {
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
     try {
-        command.execute(client, api, config, message, args);
+        command.execute(client, api, config, message, args, con);
     }
     catch (error) {
         console.error(error);

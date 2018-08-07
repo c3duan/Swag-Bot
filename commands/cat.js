@@ -4,7 +4,7 @@ module.exports = {
     name: 'cat',
     description: 'gives a random cat picture',
     usage: 'cat',
-    async execute(client, api, config, message, args) {
+    async execute(client, api, config, message, args, con) {
         let msg = await message.channel.send('Generating...');
         console.log(config.cat_api);
 

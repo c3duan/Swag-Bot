@@ -5,7 +5,7 @@ module.exports = {
     name: 'random-urban',
     desciprtion: 'gives urban dictionary definiton of a random word',
     usage: 'random-urban',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         urban.random().first(json => {
             const def = new Discord.RichEmbed()
                 .setTitle(json.word)

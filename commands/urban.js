@@ -5,7 +5,7 @@ module.exports = {
     name: 'urban',
     desciprtion: 'gives urban dictionary definiton of a word',
     usage: 'urban <word>',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         if (args.length < 1) {
             return message.channel.send('Please enter a word');
         }

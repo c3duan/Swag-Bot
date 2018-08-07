@@ -1,4 +1,4 @@
-### Swag-Bot
+## Swag-Bot
 My first ever discord bot using discord.js
 
 ## Frameworks
@@ -16,7 +16,7 @@ My first ever discord bot using discord.js
 - cat facts api
 - translation api
 
-## Command Trigger Prefix: !
+### Command Trigger Prefix: !
 
 ## List of Commands
 - essentials

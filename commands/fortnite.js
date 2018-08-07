@@ -5,7 +5,7 @@ module.exports = {
     description: 'Returns Fortnite statistics for a player',
     usage: 'fortnite <player name>',
     cooldown: 5,
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         try {
             const config = require('../config.json');
 

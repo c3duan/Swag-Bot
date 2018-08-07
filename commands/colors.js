@@ -2,7 +2,7 @@ module.exports = {
     name: 'colors',
     description: 'gives all avaliable colors in the current channel',
     usage: 'colors',
-    async execute(client, api, config, message, args) {
+    async execute(client, api, config, message, args, con) {
         let colors = message.guild.roles.filter(role => role.name.startsWith('#'));
 
         if (colors.size < 1) {

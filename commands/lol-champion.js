@@ -5,7 +5,7 @@ module.exports = {
     description: 'Display basic info and stats of a League of Legends champion',
     usage: 'lol-champion <Champion Name>',
     cooldown: 3,
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         let champName = '';
 
         for(let i = 0; i < args.length; i++) {

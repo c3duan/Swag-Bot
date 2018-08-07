@@ -1,7 +1,7 @@
 module.exports = {
     name: 'role',
     description: 'Information regarding the role of the user in current channel',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         if (!message.mentions.users.size) {
             return message.reply('You need to tag a user in order to see their role!');
         }

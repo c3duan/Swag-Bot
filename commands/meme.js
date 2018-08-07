@@ -2,7 +2,7 @@ module.exports = {
     name: 'meme',
     usage: 'meme',
     description: 'Returns a random meme',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         try {
             const request = require('request');
 

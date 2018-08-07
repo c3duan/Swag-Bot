@@ -3,7 +3,7 @@ module.exports = {
     description: 'custom emoji reaction toward specific comments',
     usage: '<react-custom>',
     cooldown: 5,
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
         const emoji = client.emojis.get(config.emojiID);
         message.react(emoji);
     },

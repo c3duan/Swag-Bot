@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'creator',
     description: 'gives info about the creator of this super awesome discord bot',
-    execute(client, api, config, message, args) {
+    execute(client, api, config, message, args, con) {
 
         const creator = new Discord.RichEmbed()
             .setColor(0xf1c40f)
