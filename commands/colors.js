@@ -1,7 +1,6 @@
 module.exports = {
     name: 'colors',
     description: 'gives all avaliable colors in the current channel',
-    usage: 'colors',
     async execute(client, api, config, message, args, con) {
         let colors = message.guild.roles.filter(role => role.name.startsWith('#'));
 
@@ -9,24 +8,17 @@ module.exports = {
             return message.channel.send('There are no colors in this channel');
         }
 
+        let data = [];
+
         if (args.length < 1) {
-            return message.channel.send(message.channel.roles);
-        }
+            data.push('Here\'s a list of all the colors:');
+            data.push(colors.map(role => role.toString()).join(' '));
+            data.push(`\nTo have one, type \`${config.prefix}color [color name]\`. For example: \`${config.prefix}color fire\``);
 
-        let str = args.join(' ');
-        let role = colors.find(role => role.name.slice(1).toLowerCase() === str.toLowerCase());
-
-        if (!role) {
-            return message.channel.send('This color does not exist');
+            return message.channel.send(data, { split: true })
         }
-
-        try {
-            await message.member.removeRoles(colors);
-            await message.member.addRole(role);
-            message.channel.send(`You now have the color ${role}!`);
+        else {
+            return message.channel.send(`See all colors, type \`${config.prefix}colors\`\nTo have one sepcific color, type \`${config.prefix}color [color name]\`. For example: \`${config.prefix}color fire\``);
         }
-        catch(e) {
-            message.channel.send(`Operation failed! ${e.message}`);
-        }
-    },
-};
+    }
+}

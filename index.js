@@ -5,6 +5,8 @@ const config = require('./config.json');
 const chalk = require('chalk');
 const RiotApi = require('lol-stats-api-module');
 const mysql = require('mysql');
+const snekfetch = require('snekfetch');
+const Canvas = require('canvas');
 
 // create a new riot api
 const api = new RiotApi({
@@ -16,6 +18,7 @@ const api = new RiotApi({
 const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
 client.commands = new Discord.Collection();
+client.mutes = require('./mute.json');
 const commandFlies = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFlies) {
@@ -81,9 +84,76 @@ client.on('ready', () => {
         else {
             console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
         }
+
+        process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
     });
 
+    client.setInterval(() => {
+        for(let i in client.mutes) {
+            let time = client.mutes[i].time;
+            let guildId = client.mutes[i].guild;
+            let guild = client.guilds.get(guildId);
+            let member = guild.members.get(i);
+            let mutedRole = guild.roles.find(r => r.name === 'Swag Muted');
+
+            if (!mutedRole) {
+                continue;
+            }
+
+            if (Date.now() > time) {
+                console.log(`${i} is now able to be unmuted!`);
+
+                member.removeRole(mutedRole);
+                delete client.mutes[i];
+
+                fs.writeFile('./mute.json', JSON.stringify(client.mutes), err => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log(`I have unmuted ${member.user.tag}.`);
+                });
+            }
+        }
+    }, 5000);
+
     console.log('Ready!');
+});
+
+client.on('guildMemberAdd', async member => {
+    const channel = member.guild.channels.find(ch => ch.name === 'member-log');
+    if (!channel) return;
+
+    const canvas = Canvas.createCanvas(700, 250);
+    const ctx = canvas.getContext('2d');
+
+    const background = await Canvas.loadImage('./Cosmo.jpg');
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = '#74037b';
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // Slightly smaller text placed above the member's display name
+    ctx.font = '28px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('Welcome to the server,', canvas.width / 2.5, canvas.height / 3.5);
+
+    // Add an exclamation point here and below
+    ctx.font = applyText(canvas, `${member.displayName}!`);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
+
+    ctx.beginPath();
+    ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.clip();
+
+    const { body: buffer } = await snekfetch.get(member.user.displayAvatarURL);
+    const avatar = await Canvas.loadImage(buffer);
+    ctx.drawImage(avatar, 25, 25, 200, 200);
+
+    const attachment = new Discord.Attachment(canvas.toBuffer(), 'Duanism.png');
+
+    channel.send(`Welcome to the server, ${member}!`, attachment);
 });
 
 const events = {
@@ -141,13 +211,14 @@ client.on('message', message => {
         if (newXP >= config.VIP * config.levelXP && !first) {
             first = 1;
 
-            let VIProle = message.guild.roles.filter(role => role == 'VIP');
+            let VIProle = message.guild.roles.filter(role => role === 'VIP');
 
             message.member.addRole(VIProle);
 
             let VIPembed = new Discord.RichEmbed()
                 .setTitle('**Congratulations, you are offically a VIP!!!**')
                 .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+                .setDescription('VIP are granted extra permission to manage some parts of the server.')
                 .setThumbnail(`${message.author.displayAvatarURL}`)
                 .addField('XP', newXP, true)
                 .addField('Level', 'VIP', true)

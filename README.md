@@ -22,6 +22,7 @@ My first ever discord bot using discord.js
 - essentials
     - invite
     - kick
+    - ban
     - prune
     - role
     - server
@@ -62,8 +63,10 @@ My first ever discord bot using discord.js
 - google search
 - youtube video/music playing
 - spotify
-- image manipulation
+- webhook
 - fun language translation
 - my anime list
+- zodiac
+
 
     

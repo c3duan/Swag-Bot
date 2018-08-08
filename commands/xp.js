@@ -25,8 +25,8 @@ module.exports = {
             let needXP = (level + 1) * config.levelXP - xp;
 
             let info = new Discord.RichEmbed()
-                .setTitle('Swag-bot\'s XP System')
-                .setAuthor(`${target.username}`)
+                .setTitle(`${target.username}'s Leveling Info`)
+                .setDescription('Level up by constantly participating in the chat')
                 .setColor(0x800080)
                 .setThumbnail(`${message.author.displayAvatarURL}`)
                 .addField('Current XP', xp, true)
