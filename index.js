@@ -20,6 +20,7 @@ const cooldowns = new Discord.Collection();
 client.commands = new Discord.Collection();
 client.mutes = require('./mute.json');
 const commandFlies = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+console.log(commandFlies.length);
 
 for (const file of commandFlies) {
     const command = require(`./commands/${file}`);
@@ -37,14 +38,6 @@ const con = mysql.createConnection({
     database: config.mysql_database,
 });
 
-// connect to mysql database
-con.connect(err => {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected to database!');
-    con.query('SHOW TABLES', console.log);
-});
 
 function generateXp() {
     const min = 10;
@@ -188,46 +181,55 @@ client.on('messageReactionRemove', (reaction, user) => {
 
 client.on('message', message => {
     // retrieve the current user xp
-    con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
-        if (err) {
-            throw err;
-        }
+    if (message.toString()[0] != `${config.prefix}`) {
+        con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
+            if (err) {
+                throw err;
+            }
 
-        let sql;
-        let newXP;
-        let first = -1;
+            let sql;
+            let newXP;
+            let level;
 
-        if(rows.length < 1) {
-            sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${generateXp()})`;
-        }
-        else {
-            let xp = rows[0].xp;
-            newXP = xp + generateXp();
-            sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
-        }
+            if(rows.length < 1) {
+                sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${generateXp()})`;
+            }
+            else {
+                let xp = rows[0].xp;
+                newXP = xp + generateXp();
+                level = Math.floor(newXP / config.levelXP);
+                sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
+            }
 
-        con.query(sql);
+            con.query(sql);
 
-        if (newXP >= config.VIP * config.levelXP && !first) {
-            first = 1;
+            if (message.guild) {
+                let VIProle = message.guild.roles.find(role => role.name === 'VIP');
 
-            let VIProle = message.guild.roles.filter(role => role === 'VIP');
+                if (VIProle) {
+                    let user = message.member;
 
-            message.member.addRole(VIProle);
+                    if (newXP >= config.VIP * config.levelXP && !user.roles.has(VIProle.id)) {
 
-            let VIPembed = new Discord.RichEmbed()
-                .setTitle('**Congratulations, you are offically a VIP!!!**')
-                .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                .setDescription('VIP are granted extra permission to manage some parts of the server.')
-                .setThumbnail(`${message.author.displayAvatarURL}`)
-                .addField('XP', newXP, true)
-                .addField('Level', 'VIP', true)
-                .setTimestamp(new Date())
-                .setFooter('VIP Announcement');
+                        user.addRole(VIProle);
 
-            message.channel.send(VIPembed);
-        }
-    });
+                        let VIPembed = new Discord.RichEmbed()
+                            .setTitle('**Congratulations**, you are offically a **VIP**!!!')
+                            .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+                            .setDescription('VIP are granted extra permission to manage some parts of the server.')
+                            .setThumbnail(`${message.author.displayAvatarURL}`)
+                            .addField('XP', newXP, true)
+                            .addField('Level', level, true)
+                            .addField('New Role', 'VIP', true)
+                            .setTimestamp(new Date())
+                            .setFooter('VIP Announcement');
+
+                        message.channel.send(VIPembed);
+                    }
+                }
+            }
+        });
+    }
 
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
@@ -268,6 +270,9 @@ client.on('message', message => {
 
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
+            if (command.name === 'daily') {
+                return message.reply('You have already collected your daily bonus.');
+            }
             return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command. `);
         }
 

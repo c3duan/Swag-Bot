@@ -23,7 +23,7 @@ module.exports = {
             return message.channel.send('You cannot unmute a member who is higher or has the same role as you!');
         }
 
-        let role = message.guild.roles.find(r => r.name == 'Swag Muted');
+        let role = message.guild.roles.find(r => r.name === 'Swag Muted');
 
         if (!role || !toUnmute.roles.has(role.id)) {
             return message.channel.send('This user is not muted!');

@@ -32,10 +32,11 @@ module.exports = {
                 .addField('Current XP', xp, true)
                 .addField('Current Level', level, true)
                 .addField('XP needed for next level', needXP, true)
-                .setFooter(`${target.username}`, `${message.author.displayAvatarURL}`);
+                .setFooter(`${target.username}`, `${message.author.displayAvatarURL}`)
+                .setTimestamp(new Date());
 
             if (level >= config.VIP) {
-                info.setColor(0xFFD700).setAuthor(`**VIP ${target.username}**`);
+                info.setColor(0xFFD700).setAuthor(`VIP: ${target.username}`);
             }
             
             message.channel.send(info);
