@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'lol-summoner',
     description: 'Gives info about a league of legend summoner',
-    usage: 'lol-summoner <Summoner Name>',
+    usage: '[Summoner Name]',
     cooldown: 7,
     execute(client, api, config, message, args, con) {
         if (!args[0]) {
@@ -14,7 +14,7 @@ module.exports = {
         api.getSummoner(summoner, (err, data) => {
             console.log(summoner);
             if (err) {
-                return message.channel.send('# An error has occurred\n' + err.code + '' + err.message);
+                return message.channel.send('# An error has occurred:' + err.code + ' ' + err.message);
             }
 
             const embed = new Discord.RichEmbed()

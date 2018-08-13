@@ -15,6 +15,8 @@ My first ever discord bot using discord.js
 - cat api
 - cat facts api
 - translation api
+- youtube api
+- spotify api
 
 ### Command Trigger Prefix: !
 
@@ -23,6 +25,8 @@ My first ever discord bot using discord.js
     - invite
     - kick
     - ban
+    - mute
+    - unmute
     - prune
     - role
     - server
@@ -56,6 +60,8 @@ My first ever discord bot using discord.js
     - cat facts
 - games
     - 8ball
+    - diceroll
+    - coinflip
     - gamble/lottery
     - hangman
 

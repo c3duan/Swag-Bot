@@ -31,7 +31,7 @@ module.exports = {
                 .setTitle('~Kick~')
                 .setColor(0x15f153)
                 .addField('Kicked User', `${taggedUser} with ID: ${taggedUser.id}`)
-                .addField('Kicked By', `<@${message.author.id}> with ID ${message.author.id}`)
+                .addField('Kicked By', `<@${message.author.id}> with ID: ${message.author.id}`)
                 .addField('Kicked From', `${message.channel}`)
                 .addField('Reason', reason)
                 .setTimestamp(new Date())

@@ -31,7 +31,7 @@ module.exports = {
                 .setTitle('~Ban~')
                 .setColor(0xbc0000)
                 .addField('Baned User', `${taggedUser} with ID: ${taggedUser.id}`)
-                .addField('Baned By', `<@${message.author.id}> with ID ${message.author.id}`)
+                .addField('Baned By', `<@${message.author.id}> with ID: ${message.author.id}`)
                 .addField('Baned From', `${message.channel}`)
                 .addField('Reason', reason)
                 .setTimestamp(new Date())

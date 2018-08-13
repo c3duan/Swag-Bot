@@ -38,6 +38,14 @@ const con = mysql.createConnection({
     database: config.mysql_database,
 });
 
+// connect to mysql database
+con.connect(err => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to database!');
+    con.query('SHOW TABLES', console.log);
+});
 
 function generateXp() {
     const min = 10;
@@ -58,13 +66,14 @@ client.on('ready', () => {
         const error = chalk.red;
         const neutral = chalk.gray;
 
+        console.log(data[0]);
         const file_content = fs.readFileSync('./config.json', 'utf-8');
         const jsonObj = JSON.parse(file_content);
 
         // Check if version defined in config.json is even with one in api callback.
-        if (jsonObj.riot_api_version !== data) {
+        if (jsonObj.riot_api_version !== data[0]) {
             // Write actual version.
-            jsonObj.riot_api_version = data;
+            jsonObj.riot_api_version = data[0];
             fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
                 // Save it to the configuration file.
                 if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
@@ -72,7 +81,7 @@ client.on('ready', () => {
             });
         }
         if (!err) {
-            console.log(success('Estabilished ') + 'connection with Riot Api v-' + neutral(data));
+            console.log(success('Estabilished ') + 'connection with Riot Api v-' + neutral(data[0]));
         }
         else {
             console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));

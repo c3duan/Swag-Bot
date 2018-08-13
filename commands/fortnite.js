@@ -30,13 +30,14 @@ module.exports = {
                         const statsText = new Discord.RichEmbed()
                             .setColor(3447003)
                             .setTitle(stats.displayName)
-                            .addBlankField(true)
+                            .setDescription('Fortnite Tracker')
                             .addField(':trophy: Victory Royales', stats.br.stats.pc.all.wins)
                             .addField(':chart_with_upwards_trend: Win Rate:', stats.br.stats.pc.all.winRate + '%')
                             .addField(':gun: Kills', stats.br.stats.pc.all.kills)
                             .addField(':skull: Deaths', stats.br.stats.pc.all.deaths)
                             .addField(':black_heart: K/D', stats.br.stats.pc.all.kpd)
-                            .addField(':clock1: Time played', stats.br.stats.pc.all.minutesPlayed + ' minutes')
+                            .addField(':clock: Time played', stats.br.stats.pc.all.minutesPlayed + ' minutes')
+                            .addField(':video_game: Matches Played', stats.br.stats.pc.all.matchesPlayed + ' matches')
                             .setTimestamp(new Date())
                             .setFooter('Fortnite Battle Royale');
 
