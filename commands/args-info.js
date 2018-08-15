@@ -3,7 +3,7 @@ module.exports = {
     description: 'Information about the arguments provided',
     args: true,
     usage: '[arguments]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (args[0] === 'foo') {
             return message.channel.send('bar');
         }

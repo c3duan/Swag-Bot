@@ -4,7 +4,7 @@ module.exports = {
     name: 'pay',
     description: 'user uses its xp as coins to pay another user for various reason',
     usage: '[recipient] [payment amount] [reason]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
 
         let recipient = message.mentions.members.first() || message.guild.members.get(args[0]);
 

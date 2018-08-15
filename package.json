@@ -15,6 +15,7 @@
     "boom": "^7.2.0",
     "canvas": "^2.0.0-alpha.13",
     "chalk": "^2.4.1",
+    "circular-json": "^0.5.5",
     "cryptiles": "^4.1.2",
     "discord.js": "^11.3.2",
     "dogapi": "^2.3.0",

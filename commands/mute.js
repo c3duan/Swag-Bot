@@ -3,8 +3,8 @@ const fs = require('fs');
 module.exports = {
     name: 'mute',
     description: 'mute a specific user',
-    usage: 'mute <user id/username> <time>',
-    async execute(client, api, config, message, args, con) {
+    usage: '[tagged user] [mute time]',
+    async execute(client, api, config, message, args, con, guilds) {
         if (!message.member.hasPermission('MANAGE_MESSAGES')) {
             return message.channel.send('You cannot manage messages.');
         }

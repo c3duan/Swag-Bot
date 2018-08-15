@@ -2,7 +2,7 @@ module.exports = {
     name: '8ball',
     description: 'generates a 8ball game for a user',
     usage: '[question]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if(!args[0]) {
             message.reply('Please ask me a question.');
           }

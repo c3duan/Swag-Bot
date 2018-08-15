@@ -1,8 +1,8 @@
 module.exports = {
     name: 'weather',
-    usage: 'weather <location name>',
+    usage: '[location name]',
     description: 'Returns the weather for a location',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
       try {
         const request = require('request');
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${args}&units=imperial&appid=${config.weather}`;

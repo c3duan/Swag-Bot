@@ -5,7 +5,7 @@ module.exports = {
     description: 'ban someone off the channel',
     usage: '[tagged user] [ban reason]',
     guildOnly: true,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (!message.mentions.users.size) {
             return message.reply('You need to tag a user in order to ban them!');
         }

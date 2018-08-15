@@ -14,6 +14,8 @@ const api = new RiotApi({
     region: config.riot_api_region,
 });
 
+let guilds = {};
+
 // create a new discord client
 const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
@@ -59,7 +61,6 @@ function generateXp() {
 // - finishes logging in
 // - reconnects after disconnecting
 client.on('ready', () => {
-
     // connect to the riot api
     api.getVersionsStaticData({ region: 'na' }, (err, data) => {
         const success = chalk.green;
@@ -289,7 +290,7 @@ client.on('message', message => {
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
     try {
-        command.execute(client, api, config, message, args, con);
+        command.execute(client, api, config, message, args, con, guilds);
     }
     catch (error) {
         console.error(error);

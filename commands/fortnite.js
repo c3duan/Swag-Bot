@@ -3,9 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'fortnite',
     description: 'Returns Fortnite statistics for a player',
-    usage: 'fortnite <player name>',
+    usage: '[player name]',
     cooldown: 5,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         try {
             const config = require('../config.json');
 

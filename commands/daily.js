@@ -6,7 +6,7 @@ module.exports = {
     name: 'daily',
     description: 'gives daily extra xp to user',
     cooldown: 86400,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         let id = message.author.id;
 
         con.query(`SELECT * FROM xp WHERE id = '${id}'`, (err, rows) => {

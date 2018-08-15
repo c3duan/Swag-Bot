@@ -4,8 +4,7 @@ module.exports = {
     name: 'xp',
     aliases: ['level'],
     description: 'displays info about user xps and their current level',
-    usage: 'xp',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         let target = message.mentions.users.first() || message.guild.members.get(args[1]) || message.author;
 
         console.log(target);

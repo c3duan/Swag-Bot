@@ -1,129 +1,68 @@
-const Discord = require('discord.js');
-const ytdl = require('ytdl-core');
-const request = require('request');
-const fs = require('fs');
-const getYouTuberID = require('get-youtube-id');
 const fetchViedoInfo = require('youtube-info');
-const config = require('../config.json');
-const yt_api_key = config.youtube_api_key;
-
-let queue = [];
-let isPlaying = false;
-let dispatcher = null;
-let voiceChannel = null;
-let skipReq = 0;
-let skippers = [];
+const music = require('../music.js');
 
 module.exports = {
     name: 'play',
     description: 'plays a specific music from youtube',
-    usage: '[youtube video link]',
-    isYoutube(str) {
-        return str.toLowerCase().indexOf('youtube.com') > -1;
-    },
-    searchVideo(query, callback) {
-        request('https://www.googleapis.com/youtube/v3/search?part=id&type=viedo&q=' + encodeURIComponent(query) + '&key=' + yt_api_key, (error, response, body) => {
-            if (error) {
-                throw error;
-            }
-            let json = JSON.parse(body);
-            if (!json.items[0]) {
-                callback('3_-a9nVZYjk');
-            }
-            else {
-                console.log(json.items[0].id);
-                callback(json.items[0].id.videoId);
-            }
-        });
-    },
-    getID(str, cb) {
-        if (this.isYoutube(str)) {
-            cb(getYouTuberID(str));
-        }
-        else {
-            this.searchVideo(str, (id) => {
-                cb(id);
-            });
-        }
-    },
-    addToQueue(strID) {
-        if (this.isYoutube(strID)) {
-            queue.push(getYouTuberID(strID));
-        }
-        else {
-            queue.push(strID);
-        }
-    },
-    playMusic(id, message) {
-        voiceChannel = message.member.voiceChannel;
-
-        if (!voiceChannel) {
-            return message.reply(' please join a voice channel first!');
-        }
-        
-        voiceChannel.join().then(connection => {
-            console.log(id);
-            const stream = ytdl('https://www.youtube.com/watch?v=' + id, { filter: 'audioonly' });
-            dispatcher = connection.playStream(stream);
-            console.log(dispatcher);
-            skipReq = 0;
-            skippers = [];
-            
-            dispatcher.on('end', () => {
-                skipReq = 0;
-                skippers = [];
-                queue.shift();
-                if (queue.length === 0) {
-                    queue = [];
-                    isPlaying = false;
-                }
-                else {
-                    this.playMusic(queue[0], message);
-                }
-            });
-            console.log('music ready!');
-        });
-    },
-    execute(client, api, config, message, args, con) {
+    usage: '[youtube video link or video name]',
+    execute(client, api, config, message, args, con, guilds) {
         if (message.channel.type !== 'text') return;
 
-        const member = message.member;
-
-        if (!member) {
-            return message.reply('please join a voice channel first!');
+        // get the current guild for the voice channel
+        if (!guilds[message.guild.id]) {
+            guilds[message.guild.id] = {
+                queue: [],
+                queueNames: [],
+                isPlaying: false,
+                dispatcher: null,
+                voiceChannel: null,
+                skipReq: 0,
+                skippers: [],
+            };
+            music.writeGuilds(guilds);
         }
 
         let videoName = args.join(' ');
+        console.log(guilds[message.guild.id]);
 
-        if (queue.length > 0 || isPlaying) {
-            this.getID(videoName, (id) => {
-                if (!id) {
-                    return message.reply(', no video include that name!');
-                }
-                this.addToQueue(id);
-                fetchViedoInfo(id, (err, videoInfo) => {
-                    if (err) {
-                        throw new Error(err);
+        if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
+            if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
+                music.getID(videoName, (id) => {
+                    if (!id) {
+                        return message.reply(', no video include that name!');
                     }
-                    message.reply(' added to queue: **' + videoInfo.title + '**');
+                    music.addToQueue(id, guilds[message.guild.id]);
+                    fetchViedoInfo(id, (err, videoInfo) => {
+                        if (err) {
+                            throw new Error(err);
+                        }
+                        message.reply(' added to queue: **' + videoInfo.title + '**');
+                        guilds[message.guild.id].queueNames.push(videoInfo.title);
+                        music.writeGuilds(guilds);
+                    });
                 });
-            });
+            }
+            else {
+                guilds[message.guild.id].isPlaying = true;
+                music.getID(videoName, (id) => {
+                    if (!id) {
+                        return message.reply(', no video include that name!');
+                    }
+                    guilds[message.guild.id].queue.push(id);
+                    music.playMusic(id, message, guilds[message.guild.id]);
+                    fetchViedoInfo(id, (err, videoInfo) => {
+                        if (err) {
+                            throw new Error(err);
+                        }
+                        message.reply(' added to queue: **' + videoInfo.title + '**');
+                        guilds[message.guild.id].queueNames.push(videoInfo.title);
+                        music.writeGuilds(guilds);
+                    });
+                });
+            }
         }
         else {
-            isPlaying = true;
-            this.getID(videoName, (id) => {
-                if (!id) {
-                    return message.reply(', no video include that name!');
-                }
-                queue.push(id);
-                this.playMusic(id, message);
-                fetchViedoInfo(id, (err, videoInfo) => {
-                    if (err) {
-                        throw new Error(err);
-                    }
-                    message.reply(' added to queue: **' + videoInfo.title + '**');
-                });
-            });
+            return message.reply('please join a voice channel first!');
         }
     },
 };

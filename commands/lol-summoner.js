@@ -5,7 +5,7 @@ module.exports = {
     description: 'Gives info about a league of legend summoner',
     usage: '[Summoner Name]',
     cooldown: 7,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (!args[0]) {
             return message.channel.send('Please supply a summnor name');
         }

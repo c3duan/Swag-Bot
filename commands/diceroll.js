@@ -2,7 +2,7 @@ module.exports = {
     name: 'diceroll',
     description: 'Rolls a dice with a given number of sides, default numebr of sides is 6.',
     usage: '[number of sides]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if(!args[0]) {
             args[0] = 6;
           }

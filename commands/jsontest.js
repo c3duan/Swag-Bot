@@ -5,9 +5,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'json',
     description: 'Simple web JSON API Testing',
-    usage: 'json <ID> <speak>',
+    usage: '[ID] [Speak]',
     cooldown: 5,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         snekfetch.get(test_api).then(r => {
             // store all info in the array body
             const body = r.body;

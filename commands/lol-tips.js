@@ -4,9 +4,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'lol-tips',
     description: 'Display tips for playing or playing against a League of Legends champion',
-    usage: 'lol-tips <Champion Name>',
+    usage: '[Champion Name]',
     cooldown: 3,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         let champName = '';
 
         for(let i = 0; i < args.length; i++) {

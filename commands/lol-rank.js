@@ -1,9 +1,9 @@
 module.exports = {
     name: 'lol-rank',
-    usage: 'lol-rank <Summoner Name>',
+    usage: '[Summoner Name]',
     description: 'display rank info of a League of Legends Summoner',
     cooldown: 5,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (!args[0]) {
             return message.channel.send('Please supply a summnor name.');
         }

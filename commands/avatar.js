@@ -3,7 +3,7 @@ module.exports = {
     aliases: ['icon', 'logo'],
     description: 'display the image and url of users\' avatar',
     usage: '[tagged users]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (!message.mentions.users.size) {
             return message.channel.send(`Your avatar: ${message.author.displayAvatarURL}`);
         }

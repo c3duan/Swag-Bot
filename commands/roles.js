@@ -2,7 +2,7 @@ module.exports = {
     name: 'roles',
     description: 'Information regarding the role of the user in current channel',
     usage: '[tagged user]',
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         if (!args[0]) {
             return message.reply('You need to tag a user in order to see their role!');
         }

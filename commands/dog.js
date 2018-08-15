@@ -3,8 +3,7 @@ const snekfetch = require('snekfetch');
 module.exports = {
     name: 'dog',
     description: 'gives a random dog picture',
-    usage: 'dog',
-    async execute(client, api, config, message, args, con) {
+    async execute(client, api, config, message, args, con, guilds) {
         let msg = await message.channel.send('Generating...');
         console.log(config.dog_api);
 

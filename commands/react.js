@@ -1,9 +1,9 @@
 module.exports = {
     name: 'react',
     description: 'emoji reaction toward specific comments',
-    usage: 'react <emoji>',
+    usage: '[emoji]',
     cooldown: 5,
-    execute(client, api, config, message, args, con) {
+    execute(client, api, config, message, args, con, guilds) {
         message.react('😄');
     },
 };

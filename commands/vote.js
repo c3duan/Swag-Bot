@@ -4,8 +4,8 @@ const disagree = ':negative_squared_cross_mark:';
 module.exports = {
     name: 'vote',
     description: 'start a poll, and count votes at the end',
-    usage: 'vote <poll topic>',
-    async execute(client, api, config, message, args, con) {
+    usage: '[poll topic]',
+    async execute(client, api, config, message, args, con, guilds) {
         let msg = await message.channel.send("Vote!");
         await msg.react(agree);
         await msg.react(disagree);
