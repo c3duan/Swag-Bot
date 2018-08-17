@@ -1,6 +1,6 @@
 # Swag-Bot
 [![Discord Server](https://discordapp.com/api/guilds/468302650337787914/embed.png)](https://discord.gg/ZG3UCB5)
-[![Build With][discord.js]](https://discord.js.org)
+[![Build With](https://discord.js.org/static/logo.svg)](https://discord.js.org)
 My first ever discord bot using discord.js
 
 ## Frameworks
