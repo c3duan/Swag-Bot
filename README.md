@@ -1,4 +1,6 @@
-## Swag-Bot
+# Swag-Bot
+[![Discord Server](https://discordapp.com/api/guilds/468302650337787914/embed.png)](https://discord.gg/ZG3UCB5)
+[![Build With]discord.js](https://discord.js.org)
 My first ever discord bot using discord.js
 
 ## Frameworks
@@ -32,7 +34,6 @@ My first ever discord bot using discord.js
     - server
     - user-info
     - args-info
-    - react
     - react-custom
     - avatar
     - beep
@@ -40,7 +41,7 @@ My first ever discord bot using discord.js
     - poll
     - logan
 - meme
-- emojis
+    - meme
 - gaming stats
     - Fortnite
     - League of Legends
@@ -53,6 +54,7 @@ My first ever discord bot using discord.js
         - lol-match
 - miscellaneous 
     - weather
+    - zodiac
 - animal related
     - dog
     - dog facts
@@ -62,17 +64,25 @@ My first ever discord bot using discord.js
     - 8ball
     - diceroll
     - coinflip
-    - gamble/lottery
+    - gamble
     - hangman
+    - quiz
+- music
+    - play
+    - skip
+- numbers
+    - currency
+    - grade
 
 ## Upcoming Commands
-- google search
-- youtube video/music playing
 - spotify
 - webhook
 - fun language translation
 - my anime list
 - zodiac
+
+## Special Thanks / Resources
+[![dragonfire535](https://travis-ci.org/dragonfire535/xiao.svg?branch=master)(https://github.com/dragonfire535)
 
 
     

@@ -1,0 +1,43 @@
+const request = require('node-superfetch');
+const Discord = require('discord.js');
+
+module.exports = {
+    name: 'translate',
+    description: 'translate a specific string or body of text from a base language into a traget language',
+    usage: '[text] [base language] [taget language]',
+    static list(arr, conj = 'and') {
+		const len = arr.length;
+		return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
+	},
+    execute(client, api, config, message, args, con, guilds) {
+        if (args.length < 3) {
+            return message.reply(`, follow the  format: ${config.prefix}${this.name} ${this.usage}.`);
+        }
+
+        let tarLan = args.pop();
+        let basLan = args.pop();
+        let body = args.join(' ');
+        const langs = config.transalte;
+
+        try {
+			const { body } = await request
+				.get('https://translate.yandex.net/api/v1.5/tr.json/translate')
+				.query({
+					key: config,
+					text,
+					lang: base ? `${base}-${target}` : target
+				});
+            const lang = body.lang.split('-');
+            
+			const embed = new Discord.RichEmbed()
+				.setColor(0xFF0000)
+				.setFooter('Powered by Yandex.Translate', 'https://i.imgur.com/HMpH9sq.png')
+				.addField(`❯ From: ${codes[lang[0]]}`, text)
+				.addField(`❯ To: ${codes[lang[1]]}`, body.text[0]);
+            
+                return msg.embed(embed);
+		} catch (err) {
+			return msg.reply(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
+		}
+    },
+};

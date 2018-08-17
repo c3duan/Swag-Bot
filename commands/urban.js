@@ -10,10 +10,11 @@ module.exports = {
             return message.channel.send('Please enter a word');
         }
         let word = args.join(' ');
+        console.log(word);
 
         urban(word).first(json => {
             if (!json) {
-                return message.channel.return('No such word exist!');
+                return message.channel.send('No such word exist!');
             }
             console.log(json);
             const def = new Discord.RichEmbed()
