@@ -85,6 +85,27 @@ module.exports = {
             GuildQueue.skippers = [];
         }
     },
+    pauseSong(message, GuildQueue) {
+        if (GuildQueue.isPlaying) {
+            GuildQueue.dispatcher.pause();
+            GuildQueue.isPlaying = false;
+        }
+        else {
+            message.channel.reply(', someone has already paused the queue.');
+        }
+    },
+    resumeSong(message, GuildQueue) {
+        if (!GuildQueue) {
+            GildQueue.dispatcher.resume();
+            GuildQueue.isPlaying = true;
+        }
+        else {
+            message.channel.reply(', the queue is already playing.');
+        }
+    },
+    setVolume(volume, GuildQueue) {
+        GuildQueue.dispatcher.setBitrate(volume);
+    },
     writeGuilds(guilds) {
         fs.writeFile('./guilds.json', Circular.stringify(guilds, null, 4), err => {
             if (err) {

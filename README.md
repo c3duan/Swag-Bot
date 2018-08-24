@@ -1,10 +1,9 @@
 # Swag-Bot
 [![Discord Server](https://discordapp.com/api/guilds/468302650337787914/embed.png)](https://discord.gg/ZG3UCB5)
-[![Build With](https://discord.js.org/static/logo.svg)](https://discord.js.org)
+[![Build With](https://discord.js.org/static/favicon.ico)](https://discord.js.org)
 My first ever discord bot using discord.js
 
 ## Frameworks
-- Node.js
 - Discord.js
 
 ## API
@@ -16,9 +15,8 @@ My first ever discord bot using discord.js
 - dog facts api
 - cat api
 - cat facts api
-- translation api
-- youtube api
-- spotify api
+- yandex api
+
 
 ### Command Trigger Prefix: !
 
@@ -55,6 +53,8 @@ My first ever discord bot using discord.js
 - miscellaneous 
     - weather
     - zodiac
+    - colors
+    - color
 - animal related
     - dog
     - dog facts
@@ -75,11 +75,9 @@ My first ever discord bot using discord.js
     - grade
 
 ## Upcoming Commands
-- spotify
 - webhook
-- fun language translation
+- anguage translation
 - my anime list
-- zodiac
 
 ## Special Thanks / Resources
 [![dragonfire535](https://travis-ci.org/dragonfire535/xiao.svg?branch=master)](https://github.com/dragonfire535)

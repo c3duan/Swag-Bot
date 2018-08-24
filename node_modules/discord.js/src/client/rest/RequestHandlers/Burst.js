@@ -1,5 +1,6 @@
 const RequestHandler = require('./RequestHandler');
 const DiscordAPIError = require('../DiscordAPIError');
+const { Events: { RATE_LIMIT } } = require('../../../util/Constants');
 
 class BurstRequestHandler extends RequestHandler {
   constructor(restManager, endpoint) {
@@ -47,10 +48,21 @@ class BurstRequestHandler extends RequestHandler {
             this.resetTimeout = null;
           }, 1e3 + this.client.options.restTimeOffset);
         } else {
-          item.reject(err.status >= 400 && err.status < 500 ? new DiscordAPIError(res.request.path, res.body) : err);
+          item.reject(err.status >= 400 && err.status < 500 ?
+            new DiscordAPIError(res.request.path, res.body, res.request.method) : err);
           this.handle();
         }
       } else {
+        if (this.remaining === 0) {
+          if (this.client.listenerCount(RATE_LIMIT)) {
+            this.client.emit(RATE_LIMIT, {
+              limit: this.limit,
+              timeDifference: this.timeDifference,
+              path: item.request.path,
+              method: item.request.method,
+            });
+          }
+        }
         this.globalLimit = false;
         const data = res && res.body ? res.body : {};
         item.resolve(data);
@@ -61,7 +73,8 @@ class BurstRequestHandler extends RequestHandler {
 
   handle() {
     super.handle();
-    if (this.remaining <= 0 || this.queue.length === 0 || this.globalLimit) return;
+    if (this.queue.length === 0) return;
+    if ((this.remaining <= 0 || this.globalLimit) && Date.now() - this.timeDifference < this.resetTime) return;
     this.execute(this.queue.shift());
     this.remaining--;
     this.handle();

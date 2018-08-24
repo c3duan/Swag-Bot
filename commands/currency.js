@@ -48,7 +48,7 @@ module.exports = {
 			if (!currencies) await this.fetchCurrencies();
 			base = currencies[base];
 			if (!base) return message.reply('Invalid base.');
-			target = this.currencies[target];
+			target = currencies[target];
 			if (!target) return message.reply('Invalid target.');
 			if (base.id === target.id) return message.reply(`Converting ${base.id} to ${target.id} is the same value, dummy.`);
 			const rate = await this.fetchRate(base, target);

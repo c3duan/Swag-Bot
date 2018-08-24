@@ -171,7 +171,7 @@ class ClientDataResolver {
    * @returns {string}
    */
   resolveInviteCode(data) {
-    const inviteRegex = /discord(?:app\.com\/invite|\.gg)\/([\w-]{2,255})/i;
+    const inviteRegex = /discord(?:app\.com\/invite|\.gg(?:\/invite)?)\/([\w-]{2,255})/i;
     const match = inviteRegex.exec(data);
     if (match && match[1]) return match[1];
     return data;
@@ -251,27 +251,22 @@ class ClientDataResolver {
     if (this.client.browser && resource instanceof ArrayBuffer) return Promise.resolve(convertToBuffer(resource));
 
     if (typeof resource === 'string') {
+      if (/^https?:\/\//.test(resource)) {
+        return snekfetch.get(resource).then(res => res.body instanceof Buffer ? res.body : Buffer.from(res.text));
+      }
       return new Promise((resolve, reject) => {
-        if (/^https?:\/\//.test(resource)) {
-          snekfetch.get(resource)
-            .end((err, res) => {
-              if (err) return reject(err);
-              if (!(res.body instanceof Buffer)) return reject(new TypeError('The response body isn\'t a Buffer.'));
-              return resolve(res.body);
-            });
-        } else {
-          const file = path.resolve(resource);
-          fs.stat(file, (err, stats) => {
-            if (err) return reject(err);
-            if (!stats || !stats.isFile()) return reject(new Error(`The file could not be found: ${file}`));
-            fs.readFile(file, (err2, data) => {
-              if (err2) reject(err2); else resolve(data);
-            });
-            return null;
+        const file = path.resolve(resource);
+        fs.stat(file, (err, stats) => {
+          if (err) return reject(err);
+          if (!stats || !stats.isFile()) return reject(new Error(`The file could not be found: ${file}`));
+          fs.readFile(file, (err2, data) => {
+            if (err2) reject(err2);
+            else resolve(data);
           });
-        }
+          return null;
+        });
       });
-    } else if (resource.pipe && typeof resource.pipe === 'function') {
+    } else if (resource && resource.pipe && typeof resource.pipe === 'function') {
       return new Promise((resolve, reject) => {
         const buffers = [];
         resource.once('error', reject);
@@ -316,6 +311,7 @@ class ClientDataResolver {
    *   'GREEN',
    *   'BLUE',
    *   'PURPLE',
+   *   'LUMINOUS_VIVID_PINK',
    *   'GOLD',
    *   'ORANGE',
    *   'RED',
@@ -326,6 +322,7 @@ class ClientDataResolver {
    *   'DARK_GREEN',
    *   'DARK_BLUE',
    *   'DARK_PURPLE',
+   *   'DARK_VIVID_PINK',
    *   'DARK_GOLD',
    *   'DARK_ORANGE',
    *   'DARK_RED',
