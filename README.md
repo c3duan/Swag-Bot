@@ -1,12 +1,12 @@
 # Swag-Bot
 [![Discord Server](https://discordapp.com/api/guilds/468302650337787914/embed.png)](https://discord.gg/ZG3UCB5)
-[![Build With](https://discord.js.org/static/favicon.ico)](https://discord.js.org)
+[![Build With](https://img.shields.io/npm/v/discord.js.svg?maxAge=3600)](https://www.npmjs.com/package/discord.js)
 My first ever discord bot using discord.js
 
 ## Frameworks
 - Discord.js
 
-## API
+## APIs
 - riot api
 - fortnite api
 - weather.com api
@@ -40,8 +40,10 @@ My first ever discord bot using discord.js
     - logan
 - meme
     - meme
+    - random-meme
+    - gif
 - gaming stats
-    - Fortnite
+    - Fortnite Tracker
     - League of Legends
         - lol-summoner
         - lol-rank
@@ -70,17 +72,35 @@ My first ever discord bot using discord.js
 - music
     - play
     - skip
+    - pause
+    - resume
+    - queue
 - numbers
-    - currency
-    - grade
+    - currency conversion
+    - grade calculator
+    - unit conversion
+- words
+    - urban - provides the urban dictionary definition of a specified word
+    - random-urban - provides the urban dictionary definition of a random word
+    - translate - translates text into different languages
+- Insult
+    - Fancy Insults
+
+## XP/Coins DataBase System
+- xp/Coins (check your current xp/coins)
+- gamble (gamble your xp/coins for extra xp/coins)
+- pay (pay someone a specific amount of xp/coins)
 
 ## Upcoming Commands
-- webhook
-- anguage translation
+- Anime List
+- Manga List
+- More Data Fetcher
+- More Insult
+
 - my anime list
 
-## Special Thanks / Resources
-[![dragonfire535](https://travis-ci.org/dragonfire535/xiao.svg?branch=master)](https://github.com/dragonfire535)
+## Special Thanks / Resources / Credits
+[dragonfire535](https://github.com/dragonfire535)
 
 
     
