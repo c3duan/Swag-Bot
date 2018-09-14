@@ -41,10 +41,13 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
     - ping
     - poll
     - logan
-- meme
+- humor
     - meme
     - random-meme
     - gif
+    - fancy insult
+    - momma
+    - joke
 - gaming stats
     - Fortnite Tracker
     - League of Legends
@@ -55,6 +58,7 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
         - lol-ability
         - lol-skin
         - lol-match
+        - lol-item
 - miscellaneous 
     - weather
     - zodiac
@@ -86,8 +90,6 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
     - urban - provides the urban dictionary definition of a specified word
     - random-urban - provides the urban dictionary definition of a random word
     - translate - translates text into different languages
-- Insult
-    - Fancy Insults
 
 ## XP/Coins DataBase System
 - xp/Coins (check your current xp/coins)
@@ -103,7 +105,8 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
 - my anime list
 
 ## Special Thanks / Resources / Credits
-- **[dragonfire535](https://github.com/dragonfire535)**
+- **[dragonfire535](https://github.com/dragonfire535)** - **[Xiao](https://github.com/dragonfire535/xiao)**
+- **[TheSharks](https://github.com/TheSharks)** - **[WildBeast](https://github.com/TheSharks/WildBeast)**
 
 
     
