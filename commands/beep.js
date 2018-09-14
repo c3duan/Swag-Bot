@@ -1,7 +1,7 @@
 module.exports = {
     name: 'beep',
     description: 'Beep!',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         message.channel.send('Boop.');
     },
 };

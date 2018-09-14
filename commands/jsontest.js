@@ -7,7 +7,7 @@ module.exports = {
     description: 'Simple web JSON API Testing',
     usage: '[ID] [Speak]',
     cooldown: 5,
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         snekfetch.get(test_api).then(r => {
             // store all info in the array body
             const body = r.body;

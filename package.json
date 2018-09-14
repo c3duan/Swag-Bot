@@ -10,7 +10,7 @@
     "Swag"
   ],
   "author": "Chengzhu Duan",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "boom": "^7.2.0",
     "canvas": "^2.0.0-alpha.13",
@@ -29,6 +29,7 @@
     "get-youtube-id": "^1.0.0",
     "hawk": "^7.0.7",
     "hoek": "^5.0.4",
+    "kayn": "^0.8.18",
     "lodash": "^4.17.10",
     "lol-stats-api-module": "^1.1.1",
     "mysql": "^2.16.0",

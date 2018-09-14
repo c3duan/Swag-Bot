@@ -2,7 +2,7 @@ module.exports = {
     name: 'findusers',
     description: 'Return all the usernames that contains the specified letters',
     usage: '[username]',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         const users = client.users;
 
         const searchTerm = args[0];

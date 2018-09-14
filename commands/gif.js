@@ -4,7 +4,7 @@ module.exports = {
     name: 'gif',
     description: 'generates a random gif based on the topic you provided',
     usage: '[topic (optional)]',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         request
             .get('http://api.giphy.com/v1/gifs/random')
             .set('api_key', 'dc6zaTOxFJmzC')

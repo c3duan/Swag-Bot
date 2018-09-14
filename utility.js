@@ -4,6 +4,7 @@
 
 const request = require('node-superfetch');
 const crypto = require('crypto');
+const Discord = require('discord.js');
 
 module.exports = {
 	delay(ms) {
@@ -59,4 +60,42 @@ module.exports = {
 	hash(text, algorithm) {
 		return crypto.createHash(algorithm).update(text).digest('hex');
 	},
+
+	checkRole(newXP, role, message, config) {
+		const user = message.member;
+		const level = Math.floor(newXP / config.levelXP);
+
+		if (newXP >= config.VIP * config.levelXP && !user.roles.has(role.id)) {
+
+			user.addRole(role);
+
+			let VIPembed = new Discord.RichEmbed()
+				.setTitle('**Congratulations**, you are offically a **VIP**!!!')
+				.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+				.setDescription('VIP are granted extra permission to manage some parts of the server.')
+				.setThumbnail(`${message.author.displayAvatarURL}`)
+				.addField('XP', newXP, true)
+				.addField('Level', level, true)
+				.addField('New Role', 'VIP', true)
+				.setTimestamp(new Date())
+				.setFooter('VIP Announcement');
+
+			return message.channel.send(VIPembed);
+		}
+	},
+
+	parseComplexLastArgs(args, maxLength, standard) {
+		let length = maxLength;
+		if(args.length < maxLength + 1) {
+			length -= (maxLength + 1 - args.length);
+		}
+		const possibleArgs = args.slice(-1 * length);
+		for(let i = 0; i < length; i++) {
+			const arg = possibleArgs.slice(i).join('_').toUpperCase();
+			if (standard[arg]) {
+				return { 'value': arg , 'index': args.length - (length - i) };
+			}
+		}
+		return null;
+	}
 }

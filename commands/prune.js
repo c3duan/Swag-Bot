@@ -2,7 +2,7 @@ module.exports = {
     name: 'prune',
     usage: '[number of messages]',
     description: 'deleted specified number of messages',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         const amount = parseInt(args[0]) + 1;
 
         if (isNaN(amount)) {

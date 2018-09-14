@@ -12,7 +12,7 @@ module.exports = {
     name: 'quiz',
     description: 'Pick what type of quiz you want (multiple / boolean); then pick what level of difficulty you want (easy, medium, hard).',
     usage: '[type] [difficulty]',
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (args.length < 2) {
             return message.reply(`, please follow the format: ${config.prefix}{this.name} {this.usage}.`);
         }

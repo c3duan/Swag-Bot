@@ -2,16 +2,35 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
+const utility = require('./utility.js');
 const chalk = require('chalk');
-const RiotApi = require('lol-stats-api-module');
 const mysql = require('mysql');
 const snekfetch = require('snekfetch');
 const Canvas = require('canvas');
+const { Kayn, REGIONS } = require('kayn');
 
 // create a new riot api
-const api = new RiotApi({
-    key: config.riot_api_key,
-    region: config.riot_api_region,
+const kayn = Kayn(config.riot_api_key)({
+    region: REGIONS.NORTH_AMERICA,
+    locale: 'en_US',
+    debugOptions: {
+        isEnabled: true,
+        showKey: false,
+    },
+    requestOptions: {
+        shouldRetry: true,
+        numberOfRetriesBeforeAbort: 3,
+        burst: false,
+        shouldExitOn403: false,
+    },
+    cacheOptions: {
+        cache: null,
+        timeToLives: {
+            useDefault: false,
+            byGroup: {},
+            byMethod: {},
+        },
+    },
 });
 
 let guilds = {};
@@ -62,42 +81,44 @@ function generateXp() {
 // - reconnects after disconnecting
 client.on('ready', () => {
     // connect to the riot api
-    api.getVersionsStaticData({ region: 'na' }, (err, data) => {
-        const success = chalk.green;
-        const error = chalk.red;
-        const neutral = chalk.gray;
+    kayn.DDragon.Version
+        .list()
+        .callback((err, data) => {
+            const success = chalk.green;
+            const error = chalk.red;
+            const neutral = chalk.gray;
 
-        console.log(data[0]);
-        const file_content = fs.readFileSync('./config.json', 'utf-8');
-        const jsonObj = JSON.parse(file_content);
+            console.log(data[0]);
+            const file_content = fs.readFileSync('./config.json', 'utf-8');
+            const jsonObj = JSON.parse(file_content);
 
-        // Check if version defined in config.json is even with one in api callback.
-        if (jsonObj.riot_api_version !== data[0]) {
-            // Write actual version.
-            jsonObj.riot_api_version = data[0];
-            fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
-                // Save it to the configuration file.
-                if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
-                else console.log(error('Couldn\'t ') + 'update ' + neutral('configuration file') + ' with latest Riot Api version.');
-            });
-        }
-        if (!err) {
-            console.log(success('Estabilished ') + 'connection with Riot Api v-' + neutral(data[0]));
-        }
-        else {
-            console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
-        }
+            // Check if version defined in config.json is even with one in api callback.
+            if (jsonObj.riot_api_version !== data[0]) {
+                // Write actual version.
+                jsonObj.riot_api_version = data[0];
+                fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
+                    // Save it to the configuration file.
+                    if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
+                    else console.log(error('Couldn\'t ') + 'update ' + neutral('configuration file') + ' with latest Riot Api version.');
+                });
+            }
+            if (!err) {
+                console.log(success('Estabilished ') + 'connection with Riot Api v-' + neutral(data[0]));
+            }
+            else {
+                console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
+            }
 
-        process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
-    });
+            process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
+        });
 
     client.setInterval(() => {
         for(let i in client.mutes) {
-            let time = client.mutes[i].time;
-            let guildId = client.mutes[i].guild;
-            let guild = client.guilds.get(guildId);
-            let member = guild.members.get(i);
-            let mutedRole = guild.roles.find(r => r.name === 'Swag Muted');
+            const time = client.mutes[i].time;
+            const guildId = client.mutes[i].guild;
+            const guild = client.guilds.get(guildId);
+            const member = guild.members.get(i);
+            const mutedRole = guild.roles.find(r => r.name === 'Swag Muted');
 
             if (!mutedRole) {
                 continue;
@@ -217,25 +238,7 @@ client.on('message', message => {
                 let VIProle = message.guild.roles.find(role => role.name === 'VIP');
 
                 if (VIProle) {
-                    let user = message.member;
-
-                    if (newXP >= config.VIP * config.levelXP && !user.roles.has(VIProle.id)) {
-
-                        user.addRole(VIProle);
-
-                        let VIPembed = new Discord.RichEmbed()
-                            .setTitle('**Congratulations**, you are offically a **VIP**!!!')
-                            .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                            .setDescription('VIP are granted extra permission to manage some parts of the server.')
-                            .setThumbnail(`${message.author.displayAvatarURL}`)
-                            .addField('XP', newXP, true)
-                            .addField('Level', level, true)
-                            .addField('New Role', 'VIP', true)
-                            .setTimestamp(new Date())
-                            .setFooter('VIP Announcement');
-
-                        message.channel.send(VIPembed);
-                    }
+                    utility.checkRole(newXP, VIProle, message, config);
                 }
             }
         });
@@ -290,7 +293,8 @@ client.on('message', message => {
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
     try {
-        command.execute(client, api, config, message, args, con, guilds);
+        console.log(command.name);
+        command.execute(client, kayn, REGIONS, config, message, args, con, guilds);
     }
     catch (error) {
         console.error(error);

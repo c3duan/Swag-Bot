@@ -1,7 +1,10 @@
 # Swag-Bot
 [![Discord Server](https://discordapp.com/api/guilds/468302650337787914/embed.png)](https://discord.gg/ZG3UCB5)
 [![Build With](https://img.shields.io/npm/v/discord.js.svg?maxAge=3600)](https://www.npmjs.com/package/discord.js)
-My first ever discord bot using discord.js
+[![Dependencies](https://img.shields.io/david/expressjs/express.svg)](https://github.com/c3duan/Swag-Bot/blob/master/package.json)
+
+## Info
+My first ever discord bot using discord.js, it has a total of 70 powerful commands along with a versatile xp database for the server.
 
 ## Frameworks
 - Discord.js
@@ -100,7 +103,7 @@ My first ever discord bot using discord.js
 - my anime list
 
 ## Special Thanks / Resources / Credits
-[dragonfire535](https://github.com/dragonfire535)
+- **[dragonfire535](https://github.com/dragonfire535)**
 
 
     

@@ -6,7 +6,7 @@ module.exports = {
     name: 'hangman',
     description: 'starts a random hangman game',
     playing: new Set(),
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (this.playing.has(message.channel.id)) return message.reply('Only one game may be occurring per channel.');
 		this.playing.add(message.channel.id);
 		try {

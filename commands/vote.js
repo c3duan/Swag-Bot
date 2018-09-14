@@ -5,7 +5,7 @@ module.exports = {
     name: 'vote',
     description: 'start a poll, and count votes at the end',
     usage: '[poll topic]',
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         let msg = await message.channel.send("Vote!");
         await msg.react(agree);
         await msg.react(disagree);

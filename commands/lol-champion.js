@@ -1,11 +1,9 @@
-const snekfetch = require('snekfetch');
-
 module.exports = {
     name: 'lol-champion',
     description: 'Display basic info and stats of a League of Legends champion',
     usage: '[Champion Name]',
     cooldown: 3,
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         let champName = '';
 
         for(let i = 0; i < args.length; i++) {
@@ -13,35 +11,20 @@ module.exports = {
             champName = champName + args[i];
         }
 
-        snekfetch.get(config.lol_champ_json).then(r => {
-            const body = r.body;
-            const entry = body.data[champName];
-            if (!entry) {
-                return message.channel.send('This champion does not exist.');
-            }
-            else {
-                console.log(entry);
-            }
-
-            const champion = {
-                name: entry.name,
-                id: entry.key,
-                dataById: true,
-                champData: 'all',
-            };
-
-            api.getChampionsStaticData(champion, (err, data) => {
-                if (err) return message.channel.send('# An error has occurred :(\n' + err.code + ' ' + err.message);
-                console.log(data);
+        kayn.DDragon.Champion
+            .get(champName)
+            .version(config.riot_api_version)
+            .then(champion => {
+                console.log(champion);
+                const data = champion.data[champName];
                 message.channel.send({
-                    
                     embed: {
                         title: data.name,
                         author: {
                             name: 'Info about ' + data.name + ':',
                         },
                         thumbnail: {
-                            url: 'http://ddragon.leagueoflegends.com/cdn/8.2.1' + '/img/champion/' + data.name.replace(/ /g, '') + '.png',
+                            url: `http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/champion/${data.name.replace(/ /g, '')}.png`,
                         },
                         description: data.title,
                         fields: [
@@ -64,8 +47,11 @@ module.exports = {
                         ],
                     },
                 });
-                console.log('finished');
+            })
+            .then(console.log('finished'))
+            .catch(error => {
+                console.error(error);
+                return message.reply(', the champion name you typed does not exist, please try again.');
             });
-        });
     },
 };

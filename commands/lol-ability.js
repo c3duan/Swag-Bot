@@ -1,153 +1,90 @@
 const Discord = require('discord.js');
-const snekfetch = require('snekfetch');
 
 module.exports = {
     name: 'lol-ability',
     description: 'gives info about inquired champion ability',
     usage: '[Champion Name] [ability P/p/passive or Q/q or W/w or E/e or R/r or A/a/all]',
     cooldown: 3,
-    execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (args.length > 3 || args.legnth < 2) {
             return message.channel.send(`${this.usage}`);
         }
 
-        const champName1 = args[0].charAt(0).toUpperCase() + args[0].slice(1).toLowerCase();
-        const champName2 = champName1 + args[1].charAt(0).toUpperCase() + args[1].slice(1).toLowerCase();
-        let ability = '';
+        const champName = args.slice(0, args.length - 1).join('');
+        const ability = args[args.length - 1];
 
-        snekfetch.get(config.lol_champ_json).then(r => {
-            const body = r.body;
-            let entry = null;
-            const entry1 = body.data[champName1];
-            const entry2 = body.data[champName2];
-
-            if (!entry1 && !entry2) {
-                return message.channel.send('This champion does not exist.');
-            }
-            if (entry1) {
-                entry = entry1;
-                ability = args[1];
-            }
-            if (entry2) {
-                entry = entry2;
-                ability = args[2];
-            }
-
-            const champion = {
-                name: entry.name,
-                id: entry.key,
-                dataById: true,
-                champData: 'all',
-            };
-
-            console.log(entry)
-            api.getChampionsStaticData(champion, (err, data) => {
-                if (err) return message.channel.send('# An error has occurred :(\n' + err.code + ' ' + err.message);
-
+        kayn.DDragon.Champion
+            .get(champName)
+            .version(config.riot_api_version)
+            .then(async (champion) => {
+                const data = champion.data[champName];
+                console.log(champion);
+                console.log(data.spells);
+                console.log(data.spells[3].effect);
                 switch(ability.toLowerCase()) {
                     case 'p':
                     case 'passive':
-                        const passiveText = new Discord.RichEmbed()
+                        const passiveText = await new Discord.RichEmbed()
                             .setAuthor('Info about ' + data.passive.name + ':')
                             .setTitle(data.passive.name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/passive/${data.passive.image.full}`)
+                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/passive/${data.passive.image.full}`)
                             .setDescription(data.passive.description)
                             .setFooter(`${data.name} Passive: ${data.passive.name}`);
 
-                        message.channel.send(passiveText);
+                        await message.channel.send(passiveText);
                         break;
 
                     case 'q':
-                        const qText = new Discord.RichEmbed()
-                            .setAuthor('Info about ' + data.spells[0].name + ':')
-                            .setTitle(data.spells[0].name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[0].key}.png`)
-                            .setDescription(data.spells[0].description)
-                            .addField('Tips', data.spells[0].sanitizedTooltip)
-                            .addField('Cost', data.spells[0].costBurn)
-                            .addField('Cool Down', data.spells[0].cooldownBurn)
-                            .addField('Effect', data.spells[0].effectBurn)
-                            .addField('Range', data.spells[0].rangeBurn)
-                            .setFooter(`${data.name} Q: ${data.spells[0].name}`);
-
-                        message.channel.send(qText);
-                        break;
-
                     case 'w':
-                        const wText = new Discord.RichEmbed()
-                            .setAuthor('Info about ' + data.spells[1].name + ':')
-                            .setTitle(data.spells[1].name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[1].key}.png`)
-                            .setDescription(data.spells[1].description)
-                            .addField('Tips', data.spells[1].sanitizedTooltip)
-                            .addField('Cost', data.spells[1].costBurn)
-                            .addField('Cool Down', data.spells[1].cooldownBurn)
-                            .addField('Effect', data.spells[1].effectBurn)
-                            .addField('Range', data.spells[1].rangeBurn)
-                            .setFooter(`${data.name} W: ${data.spells[1].name}`);
-
-                        message.channel.send(wText);
-                        break;
-
                     case 'e':
-                        const eText = new Discord.RichEmbed()
-                            .setAuthor('Info about ' + data.spells[2].name + ':')
-                            .setTitle(data.spells[2].name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[2].key}.png`)
-                            .setDescription(data.spells[2].description)
-                            .addField('Tips', data.spells[2].sanitizedTooltip)
-                            .addField('Cost', data.spells[2].costBurn)
-                            .addField('Cool Down', data.spells[2].cooldownBurn)
-                            .addField('Effect', data.spells[2].effectBurn)
-                            .addField('Range', data.spells[2].rangeBurn)
-                            .setFooter(`${data.name} E: ${data.spells[2].name}`);
-
-                        message.channel.send(eText);
-                        break;
-
                     case 'r':
-                        const rText = new Discord.RichEmbed()
-                            .setAuthor('Info about ' + data.spells[3].name + ':')
-                            .setTitle(data.spells[3].name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[3].key}.png`)
-                            .setDescription(data.spells[3].description)
-                            .addField('Tips', data.spells[3].sanitizedTooltip)
-                            .addField('Cost', data.spells[3].costBurn)
-                            .addField('Cool Down', data.spells[3].cooldownBurn)
-                            .addField('Effect', data.spells[3].effectBurn)
-                            .addField('Range', data.spells[3].rangeBurn)
-                            .setFooter(`${data.name} R: ${data.spells[3].name}`);
+                        const keys = ['Q', 'W', 'E', 'R'];
+                        const rText = await new Discord.RichEmbed()
+                            .setAuthor('Info about ' + data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].name + ':')
+                            .setTitle(data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].name)
+                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/spell/${data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].image.full}`)
+                            .setURL(`https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${ability.charAt(0).toUpperCase()}1.webm`)
+                            .setDescription(data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].description)
+                            .addField('Video Link', `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${ability.charAt(0).toUpperCase()}1.webm`)
+                            .addField('Cost', data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].costBurn)
+                            .addField('Cool Down', data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].cooldownBurn)
+                            .addField('Effect', data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].effectBurn)
+                            .addField('Range', data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].rangeBurn)
+                            .setFooter(`${data.name} ${ability.charAt(0).toUpperCase()}: ${data.spells[keys.indexOf(ability.charAt(0).toUpperCase())].name}`);
 
-                        message.channel.send(rText);
+                        await message.channel.send(rText);
+                        await message.channel.send(`https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${ability.charAt(0).toUpperCase()}1.webm`);
                         break;
 
                     case 'a':
                     case 'all':
-                        const passive = new Discord.RichEmbed()
+                        const passive = await new Discord.RichEmbed()
                             .setAuthor('Info about ' + data.passive.name + ':')
                             .setTitle(data.passive.name)
-                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/passive/${data.passive.image.full}`)
+                            .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/passive/${data.passive.image.full}`)
                             .setDescription(data.passive.description)
                             .setFooter(`${data.name} Passive: ${data.passive.name}`);
 
-                        message.channel.send(passive);
+                        await message.channel.send(passive);
 
-                        const keys = ['Q', 'W', 'E', 'R'];
+                        const options = ['Q', 'W', 'E', 'R'];
 
                         for (let i = 0; i < 4; i++) {
-                            const spells = new Discord.RichEmbed()
+                            const spells = await new Discord.RichEmbed()
                                 .setAuthor('Info about ' + data.spells[i].name + ':')
                                 .setTitle(data.spells[i].name)
-                                .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/8.2.1/img/spell/${data.spells[i].key}.png`)
+                                .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/spell/${data.spells[i].image.full}`)
+                                .setURL(`https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${options[i]}1.webm`)
                                 .setDescription(data.spells[i].description)
-                                .addField('Tips', data.spells[i].sanitizedTooltip)
+                                .addField('Video Link', `https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${options[i]}1.webm`)
                                 .addField('Cost', data.spells[i].costBurn)
                                 .addField('Cool Down', data.spells[i].cooldownBurn)
                                 .addField('Effect', data.spells[i].effectBurn)
                                 .addField('Range', data.spells[i].rangeBurn)
-                                .setFooter(`${data.name} ${keys[i]}: ${data.spells[i].name}`);
+                                .setFooter(`${data.name} ${options[i]}: ${data.spells[i].name}`);
 
-                            message.channel.send(spells);
+                            await message.channel.send(spells);
+                            await message.channel.send(`https://d28xe8vt774jo5.cloudfront.net/champion-abilities/${data.key.padStart(4, '0')}/ability_${data.key.padStart(4, '0')}_${options[i]}1.webm`);
                         }
                         break;
 
@@ -155,8 +92,11 @@ module.exports = {
                         return message.channel.send(`Invalid Ability Option\n${this.usage}`);
 
                 }
+            })
+            .then(console.log('finished'))
+            .catch(error => {
+                console.error(error);
+                return message.reply(', the champion name you typed does not exist or you did not provide an ability option, please try again.');
             });
-        });
-
     },
 };

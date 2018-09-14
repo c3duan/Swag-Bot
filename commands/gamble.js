@@ -4,7 +4,7 @@ exports.module = {
     name: 'gamble',
     description: 'gamble a certain amount of xp/coins, if might lost all of it or win extra',
     usage: '[xp/coin amount]',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (!args) {
             return message.reply(` please use ${config.prefix}${this.name} ${this.usage}: ${this.description}`);
         }

@@ -5,7 +5,7 @@ module.exports = {
     name: 'play',
     description: 'plays a specific music from youtube',
     usage: '[youtube video link or video name]',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (message.channel.type !== 'text') return;
 
         // get the current guild for the voice channel

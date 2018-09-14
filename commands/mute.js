@@ -4,7 +4,7 @@ module.exports = {
     name: 'mute',
     description: 'mute a specific user',
     usage: '[tagged user] [mute time]',
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (!message.member.hasPermission('MANAGE_MESSAGES')) {
             return message.channel.send('You cannot manage messages.');
         }

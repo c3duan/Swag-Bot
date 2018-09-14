@@ -24,7 +24,7 @@ module.exports = {
 		setTimeout(() => rates.delete(query), 1.8e+6);
 		return body[query];
     },
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (args.length < 3) {
             message.reply(`, follow this format: ${config.prefix}${this.name} ${this.usage}.`);
         }

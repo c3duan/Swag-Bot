@@ -3,7 +3,7 @@ const music = require('../music.js');
 module.exports = {
     name: 'skip',
     description: 'skip a song in the queue',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         let server = guilds[message.guild.id];
 
         if (server.skippers.indexOf(message.author.id) == -1) {

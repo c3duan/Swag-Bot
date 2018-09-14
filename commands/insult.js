@@ -4,7 +4,7 @@ module.exports = {
     name: 'insult',
     description: 'insults the tagged user or the message sender if no one is tagged',
     cooldown: 3,
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         const user = message.mentions.members.first() || message.guild.members.get(args[0]) || message.guild.members.get(message.author.id);
 
         request.get('http://quandyfactory.com/insult/json/')
@@ -14,7 +14,7 @@ module.exports = {
                     message.channel.send(`${user}, ${fancyinsult.insult}`);
                 } 
                 else {
-                    global.logger.error(`REST call failed: ${err}`)
+                    console.log(`REST call failed: ${err}`)
                 }
             });
     },

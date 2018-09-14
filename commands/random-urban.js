@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'random-urban',
     desciprtion: 'gives urban dictionary definiton of a random word',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         urban.random().first(json => {
             const def = new Discord.RichEmbed()
                 .setTitle(json.word)

@@ -2,7 +2,7 @@ module.exports = {
     name: 'grade',
     description: 'calculates the score you must get on the next assessment/assignment in order to have your desired grade based on your current grade',
     usage: '[current grade] [next assessment weight] [desired grade]',
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (args.length < 3) {
             message.reply(`, please follow the format: ${config.prefix}${this.name} ${this.usage}`);
         }

@@ -9,7 +9,7 @@ module.exports = {
 		const len = arr.length;
 		return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
 	},
-    async execute(client, api, config, message, args, con, guilds) {
+    async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
 		const filter = res => {
 			return res.author.id === message.author.id;
 		};

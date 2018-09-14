@@ -5,7 +5,7 @@ module.exports = {
     description: 'kick someone off the channel',
     usage: '[tagged user] [kick reason]',
     guildOnly: true,
-    execute(client, api, config, message, args, con, guilds) {
+    execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (!message.mentions.users.size) {
             return message.reply('You need to tag a user in order to kick them!');
         }
