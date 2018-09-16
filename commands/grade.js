@@ -1,8 +1,11 @@
+const { above100, above92, above88, above80, below80 } = require('../Data/Grade/grade.json');
+
 module.exports = {
     name: 'grade',
     description: 'calculates the score you must get on the next assessment/assignment in order to have your desired grade based on your current grade',
     usage: '[current grade] [next assessment weight] [desired grade]',
     execute(client, kayn, REGIONS, config, message, args, con, guilds) {
+
         if (args.length < 3) {
             message.reply(`, please follow the format: ${config.prefix}${this.name} ${this.usage}`);
         }

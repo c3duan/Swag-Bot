@@ -10,7 +10,7 @@ module.exports = {
             // grab the "first" mentioned user from the message
             // this will return a `User` object, just like `message.author`
             const taggedUser = message.mentions.members.first() || message.guild.members.get(args[0]);
-            const userRoles = taggedUser.roles.map(role => role.toString());
+            const userRoles = taggedUser.roles.filter(role => role.name.charAt(0) !== '#').map(role => role.toString());
             userRoles.shift();
 
             message.channel.send(`${taggedUser}'s roles: ${userRoles.join(' ')}`);

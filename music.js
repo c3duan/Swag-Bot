@@ -95,8 +95,10 @@ module.exports = {
         }
     },
     resumeSong(message, GuildQueue) {
-        if (!GuildQueue) {
-            GildQueue.dispatcher.resume();
+        console.log(GuildQueue.isPlaying);
+        if (!GuildQueue.isPlaying) {
+            console.log('in here');
+            GuildQueue.dispatcher.resume();
             GuildQueue.isPlaying = true;
         }
         else {

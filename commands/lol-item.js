@@ -21,19 +21,19 @@ module.exports = {
                 }
 
                 const items = list.data;
-                const item = Object.entries(items).find(weapon => weapon.name.toLowerCase() === itemName);
+                const item = Object.values(items).find(weapon => weapon.name.toLowerCase() === itemName);
                 if (!item) {
                     return message.reply('sorry no such item exists, please try again.');
                 }
                 const embed = new Discord.RichEmbed()
                     .setTitle(item.name)
-                    .setDescription(item.description.replace(/\s*\<.*?\>\s*/g, ''))
+                    .setDescription(item.description.replace(/\s*\<.*?\>\s*/g, ' '))
                     .setThumbnail(`http://ddragon.leagueoflegends.com/cdn/${config.riot_api_version}/img/item/${item.image.full}`)
-                    .addField(`${item.plaintext} into ${item.into.join('/')}`)
+                    .addField(`${item.plaintext} ${(item.into) ? 'into' : ''}`, `${(item.into) ? `${item.into.join('/')}` : 'Base Item'}`)
                     .addField('Purchase Price', item.gold.total, true)
                     .addField('Sell Price', item.gold.sell, true);
                     
-                message.channel.reply(embed);
+                message.channel.send(embed);
             });
-    }
-}
+    },
+};

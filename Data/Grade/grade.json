@@ -1,0 +1,37 @@
+{
+    "above100": [
+        "Maybe there’s extra credit?",
+        "On the bright side, grades don’t really matter anyway.",
+        "Try aiming a little lower.",
+        "Is that even possible to get?",
+        "Better luck next time!"
+    ],
+    "above92": [
+        "Don’t give up! You can do it!",
+        "Good luck!",
+        "Don’t give up! I believe in you!",
+        "But I’ve never known you to shy away from a challenge.",
+        "But what’s life without a challenge?",
+        "Start studying!"
+    ],
+    "above88": [
+        "On the bright side, it could be a lot worse.",
+        "I think you’ll do just fine!",
+        "Relax, you can do it!",
+        "Good luck!",
+        "Show them what you’ve got!"
+    ],
+    "above80": [
+        "Don’t worry, it’ll be a piece of cake.",
+        "You can do it, no problem!",
+        "Good luck!"
+    ],
+    "below80": [
+        "You don’t even need to bother studying.",
+        "Have fun (doing other things)!",
+        "Maybe you can just draw a flower on the test or something.",
+        "Congratulations!",
+        "Nice job! You earned it.",
+        "Try aiming higher!"
+    ]
+}

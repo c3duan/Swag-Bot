@@ -97,5 +97,5 @@ module.exports = {
 			}
 		}
 		return null;
-	}
-}
+	},
+};

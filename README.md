@@ -59,6 +59,9 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
         - lol-skin
         - lol-match
         - lol-item
+- info search
+    - kitsu-anime
+    - kitsu-manga
 - miscellaneous 
     - weather
     - zodiac
@@ -91,18 +94,14 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
     - random-urban - provides the urban dictionary definition of a random word
     - translate - translates text into different languages
 
+
 ## XP/Coins DataBase System
 - xp/Coins (check your current xp/coins)
 - gamble (gamble your xp/coins for extra xp/coins)
 - pay (pay someone a specific amount of xp/coins)
 
 ## Upcoming Commands
-- Anime List
-- Manga List
-- More Data Fetcher
-- More Insult
 
-- my anime list
 
 ## Special Thanks / Resources / Credits
 - **[dragonfire535](https://github.com/dragonfire535)** - **[Xiao](https://github.com/dragonfire535/xiao)**

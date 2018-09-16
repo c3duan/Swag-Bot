@@ -1,5 +1,10 @@
 const Discord = require('discord.js');
-const request = require('superagent');
+const request = require('request');
+const fs = require('fs');
+if (typeof fetch !== 'function') {
+    global.fetch = require('node-fetch-polyfill');
+}
+const d3 = require('d3');
 
 module.exports = {
     name: 'fifa-player',
@@ -7,78 +12,64 @@ module.exports = {
     usage: '[team name] [player name]',
     cooldown: 5,
     async execute(client, kayn, REGIONS, config, message, args, con, guilds) {
-        const teamName = args[0].toLowerCase();
-        const playerName = args[1].toLowerCase();
-        let teamId = null;
+        const playerName = args.join(' ').toLowerCase();        
+        let playerCSVData = null;    
 
         try {
-            const options = {
-                method: 'GET',
-                url: 'https://api.football-data.org/v2/teams',
-                headers: {
-                    'X-Auth-Token':  config.football_key,
-                },
-            };
-            await request(options, (error, response, body) => {
-                if (!error && response.statusCode == 200) {
-                    try {
-                        const stats = JSON.parse(body);
-                        const teams = stats.teams;
-                        const team = teams.find(team => team.name.toLowerCase() === teamName || team.shortName.toLowerCase() === teamName || team.tla.toLowerCase() === teamName);
-                        teamId = team.id;
-                    }
-                    catch(err) {
-                        return message.reply(`, sorry we encountered an error: ${err}`);
-                    }
-                }
+            const file_content = fs.readFileSync('./Data/FIFA/CompleteDataset.csv', 'utf-8');
+            playerCSVData = d3.csvParse(file_content).find(datum => {
+                const name = datum.Name.toLowerCase();
+                const firstPart = name[0].replace(/./g, '');
+                const secondPart = name[1];
+                return name === playerName || (args[0].search(firstPart) && secondPart === args[2]);
             });
+            console.log(playerCSVData);
+           
+            const statsText = new Discord.RichEmbed()
+                .setColor(3447003)
+                .setTitle(`:soccer: ${playerCSVData.Name}`)
+                .setAuthor('Player Info', `https://cdn.sofifa.org/teams/10/19/light/${playerCSVData['Club Logo'].slice(35)}`)
+                .setThumbnail(`https://cdn.sofifa.org/players/10/19/${playerCSVData.ID}.png`)
+                .setDescription('FIFA Player Info [Note all infos are based on 2018, please wait for updates on 2019]')
+                .addField('Current Club', playerCSVData.Club, true)
+                .addField('Preferred Positions', playerCSVData['Preferred Positions'], true)
+                .addField('Age', playerCSVData.Age, true)
+                .addField('Nationality', playerCSVData.Nationality, true)
+                .addField('Value', playerCSVData.Value, true)
+                .addField('Wage', playerCSVData.Wage, true)
+                .addBlankField()
+                .addField('Overall Rating', playerCSVData.Overall);
+
+            if(playerCSVData['Preferred Positions'].search('GK') !== -1) {
+                statsText
+                    .addField('GK Diving', playerCSVData['GK diving'], true)
+                    .addField('GK Handling', playerCSVData['GK handling'], true)
+                    .addField('Gk Kicking', playerCSVData['GK kicking'], true)
+                    .addField('GK Positioning', playerCSVData['GK positioning'], true)
+                    .addField('GK Reflexes', playerCSVData['GK reflexes'], true);
+            }
+            else {
+                statsText
+                    .addField('Acceleration', playerCSVData.Acceleration, true)
+                    .addField('Sprint Speed', playerCSVData['Sprint speed'], true)
+                    .addField('Dribbling', playerCSVData.Dribbling, true)
+                    .addField('Finishing', playerCSVData.Finishing, true)
+                    .addField('Passing', Math.floor(( parseInt(playerCSVData['Long passing']) + parseInt(playerCSVData['Short passing']) ) / 2), true)
+                    .addField('Crossing', playerCSVData.Crossing, true)
+                    .addField('Tackle', Math.floor(( parseInt(playerCSVData['Sliding tackle']) + parseInt(playerCSVData['Standing tackle']) ) / 2), true);
+            }
             
-            const teamOptions = {
-                method: 'GET',
-                url: `https://api.football-data.org/v2/teams/${teamId}`,
-                headers: {
-                    'X-Auth-Token': config.football_key,
-                },
-            };
+            statsText
+                .setTimestamp(new Date())
+                .setFooter('FIFA Player Stats', playerCSVData.Flag);
 
-            await request(teamOptions, (error, response, body) => {
-                if (!error && response.statusCode == 200) {
-                    try {
-                        const stats = JSON.parse(body);
-                        const squad = stats.squad;
-                        const player = squad.find(p => p.name.toLowerCase() === playerName);
-
-                        /*
-https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/200px-Cristiano_Ronaldo_2018.jpg" 
-                        */
-                        // Formats the statistics into an embed to return to the user
-                        const statsText = new Discord.RichEmbed()
-                            .setColor(3447003)
-                            .setTitle(player.name)
-                            .setDescription('FIFA Player Info')
-                            .addField('Current Team', stats.name, true)
-                            .addField('Position', player.position, true)
-                            .addField('Date of Birth', player.dateOfBirth, true)
-                            .addField('Country of Birth', player.countryOfBirth, true)
-                            .addField('Nationality', player.nationality, true)
-                            .setTimestamp(new Date())
-                            .setFooter('FIFA Player Stats');
-
-                        return message.channel.send(statsText);
-                    }
-
-                    // Error catching if API returns undefined
-                    catch (err) {
-                        console.log(err);
-                        return message.reply('I am unable to retrieve FIFA statistics');
-                    }
-                }
-            });
+            return message.channel.send(statsText);
+        
         }
         // Error catching for non-API related issues
         catch (error) {
             console.log(error);
-            return message.reply('I am unable to retrieve Fortnite statistics');
+            return message.reply('I am unable to retrieve FIFA statistics');
         }
     },
 };
