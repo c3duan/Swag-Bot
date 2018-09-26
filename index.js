@@ -236,22 +236,20 @@ client.on('messageReactionRemove', (reaction, user) => {
 });
 
 client.on('message', message => {
+    // create a spam detector
+    spamDetector(client, {
+        warnBuffer: 3, // Maximum amount of messages allowed to send in the interval time before getting warned.
+        maxBuffer: 7, // Maximum amount of messages allowed to send in the interval time before getting banned.
+        interval: 5000, // Amount of time in ms users can send a maximum of the maxBuffer variable before getting banned.
+        warningMessage: 'stop spamming or I\'ll whack your head off.', // Warning message send to the user indicating they are going to fast.
+        banMessage: 'has been banned for spamming, anyone else?', // Ban message, always tags the banned user in front of it.
+        maxDuplicatesWarning: 7,// Maximum amount of duplicate messages a user can send in a timespan before getting warned
+        maxDuplicatesBan: 10, // Maximum amount of duplicate messages a user can send in a timespan before getting banned
+        deleteMessagesAfterBanForPastDays: 7 // Delete the spammed messages after banning for the past x days.
+    }, Money, con);
 
     // retrieve the current user xp and add additional xp
     if (message.toString()[0] !== config.prefix) {
-
-        // create a spam detector
-        spamDetector(client, {
-            warnBuffer: 3, // Maximum amount of messages allowed to send in the interval time before getting warned.
-            maxBuffer: 7, // Maximum amount of messages allowed to send in the interval time before getting banned.
-            interval: 5000, // Amount of time in ms users can send a maximum of the maxBuffer variable before getting banned.
-            warningMessage: 'stop spamming or I\'ll whack your head off.', // Warning message send to the user indicating they are going to fast.
-            banMessage: 'has been banned for spamming, anyone else?', // Ban message, always tags the banned user in front of it.
-            maxDuplicatesWarning: 7,// Maximum amount of duplicate messages a user can send in a timespan before getting warned
-            maxDuplicatesBan: 10, // Maximum amount of duplicate messages a user can send in a timespan before getting banned
-            deleteMessagesAfterBanForPastDays: 7 // Delete the spammed messages after banning for the past x days.
-        }, Money, con);
-
         con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
             if (err) {
                 throw err;
@@ -284,7 +282,7 @@ client.on('message', message => {
         * retrieve the current coins and only add additional coins if the message is send 
         * in channels from the help category
         */
-        if (message.channel.parent.name === 'help') {
+        if (message.channel.parent.name === 'Help') {
             const coinsToAdd = generateXp(10, 50);
             console.log(coinsToAdd + 'coins');
 
