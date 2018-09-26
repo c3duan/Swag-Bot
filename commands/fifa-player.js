@@ -16,7 +16,7 @@ module.exports = {
         let playerCSVData = null;    
 
         try {
-            const file_content = fs.readFileSync('./Data/FIFA/CompleteDataset.csv', 'utf-8');
+            const file_content = fs.readFileSync('./data/FIFA/CompleteDataset.csv', 'utf-8');
             playerCSVData = d3.csvParse(file_content).find(datum => {
                 const name = datum.Name.toLowerCase();
                 const firstPart = name[0].replace(/./g, '');

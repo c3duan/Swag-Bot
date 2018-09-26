@@ -1,104 +1,101 @@
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/DiscordDB', { useNewUrlParser: true }, err => {
+    if (err) console.error(err);
+    console.log(mongoose);
+});
+const Money = require('../models/money.js');
 
 module.exports = {
     name: 'pay',
-    description: 'user uses its xp as coins to pay another user for various reason',
+    description: 'user uses coins to pay another user for various reason',
     usage: '[recipient] [payment amount] [reason]',
     execute(client, kayn, REGIONS, config, message, args, con, guilds) {
 
-        let recipient = message.mentions.members.first() || message.guild.members.get(args[0]);
+        const recipient = message.mentions.members.first() || message.guild.members.get(args[0]);
 
         if (!recipient) {
             return message.reply('Please specifiy who you want tp pay!');
         }
 
-        let amount = parseInt(args[1]);
+        const amount = parseInt(args[1]);
 
-        if (!amount) {
+        if (isNaN(amount)) {
             return message.reply('Please provide a valid number for payment amount!');
         }
 
-        let reason = args.slice(2).join(' ');
+        const reason = args.slice(2).join(' ');
         console.log(reason);
 
         if (!reason) {
             return message.reply('Please give a reason for this payment');
         }
 
-        con.query(`SELECT * FROM xp WHERE id = '${message.author.id}'`, (err, rows) => {
+        Money.findOne({
+            userID: message.author.id,
+            serverID: message.guild.id,
+        }, (err, money) => {
             if (err) {
-                throw err;
+                console.error(err);
+                return message.reply('sorry, an error occurred!');
             }
+            if (!money) {
+                const newMoney = new Money({
+                    userID: message.author.id,
+                    serverID: message.guild.id,
+                    money: 0,
+                });
 
-            let sql;
+                newMoney.save().catch(err => console.error(err));
 
-            if(rows.length < 1) {
-                return message.reply('You don\'t have any xp, gain xp by being active in the server!');
+                return message.reply('you can\'t make a payment since you do not have any coins associated with your account');
             }
             else {
-                let xp = rows[0].xp;
-             
-                if (amount > xp) {
-                    return message.reply('You don\'t have enough xp to complete the payment!');
+                if (money.momey < amount) {
+                    return message.reply('you do not have enough coins to complete the payment.');
                 }
 
-                sql = `UPDATE xp SET xp = ${xp - amount} WHERE id = '${message.author.id}'`;
+                money.money = money.money - amount;
+                money.save().catch(err => console.error(err));
             }
-
-            con.query(sql);
-
         });
 
-        con.query(`SELECT * FROM xp WHERE id = '${recipient.id}'`, (err, rows) => {
+        Money.findOne({
+            userID: recipient.id,
+            serverID: recipient.id,
+        }, (err, money) => {
             if (err) {
-                throw err;
+                console.error(err);
+                return message.reply('sorry, an error occurred!');
             }
+            if (!money) {
+                const newMoney = new Money({
+                    userID: message.author.id,
+                    serverID: message.guild.id,
+                    money: amount,
+                });
 
-            let sql;
-            let level;
-            let newXP;
-
-            if(rows.length < 1) {
-                sql = `INSERT INTO xp (id, xp) VALUES ('${recipient.id}', ${amount})`;
+                newMoney.save().catch(err => console.error(err));
             }
             else {
-                let xp = rows[0].xp;
-                newXP = xp + amount;
-                sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${recipient.id}'`;
+                money.money = money.money + amount;
+                money.save().catch(err => console.error(err));
             }
+        });
 
-            con.query(sql);
-            
-            let payEmbed = new Discord.RichEmbed()
+        const payEmbed = new Discord.RichEmbed()
                 .setTitle(':money_with_wings: **Transcation Details**')
                 .addField('Recipient', recipient)
                 .addField('Payer', message.guild.members.get(message.author.id))
                 .addField('Payemnt Amount', amount)
                 .addField('Payment Reason', reason)
                 .setTimestamp(new Date())
-                .setFooter('XP Payment');
+                .setFooter('Coins Payment');
 
-            message.channel.send(payEmbed);
- 
-            let VIProle = message.guild.roles.find(role => role.name === 'VIP');
-
-            if (newXP >= config.VIP * config.levelXP && !recipient.roles.has(VIProle.id)) {
-                console.log('In here');
-                recipient.addRole(VIProle);
-
-                let VIPembed = new Discord.RichEmbed()
-                    .setTitle('**Congratulations**, you are offically a **VIP**!!!')
-                    .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                    .setDescription('VIP are granted extra permission to manage some parts of the server.')
-                    .setThumbnail(`${message.author.displayAvatarURL}`)
-                    .addField('XP', newXP, true)
-                    .addField('Level', level, true)
-                    .addField('New Role', 'VIP', true)
-                    .setTimestamp(new Date())
-                    .setFooter('VIP Announcement');
-
-                message.channel.send(VIPembed);
-            }
-        });
+        const banChannel = message.guild.channels.find('name', 'incidents');
+        if (!banChannel) {
+            return message.channel.send('Can\'t find incidents channel');
+        }
+        banChannel.send(payEmbed);
     },
 };

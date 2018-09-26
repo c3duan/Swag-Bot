@@ -18,7 +18,7 @@ module.exports = {
 			.get('https://free.currencyconverterapi.com/api/v5/convert')
 			.query({
 				q: query,
-				compact: 'ultra'
+				compact: 'ultra',
 			});
 		rates.set(query, body[query]);
 		setTimeout(() => rates.delete(query), 1.8e+6);

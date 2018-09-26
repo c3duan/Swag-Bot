@@ -1,71 +1,67 @@
-const Discord = require('discord.js');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/DiscordDB', { useNewUrlParser: true }, err => {
+    if (err) console.error(err);
+    console.log(mongoose);
+});
+const Money = require('../models/money.js');
 
-exports.module = {
+module.exports = {
     name: 'gamble',
-    description: 'gamble a certain amount of xp/coins, if might lost all of it or win extra',
+    description: 'gamble a certain amount of coins, the users might lost some or all of the capital, but they can also win extra',
     usage: '[xp/coin amount]',
     execute(client, kayn, REGIONS, config, message, args, con, guilds) {
         if (!args) {
-            return message.reply(` please use ${config.prefix}${this.name} ${this.usage}: ${this.description}`);
+            return message.reply(`please use ${config.prefix}${this.name} ${this.usage}: ${this.description}`);
         }
 
-        let amount = parseInt(args[0]);
+        const amount = parseInt(args[0]);
 
-        if (!amount) {
-            return message.reply(' please enter a valid number for the amount of xp/coin you want to gamble.');
+        if (isNaN(amount)) {
+            return message.reply('please enter a valid number for the amount of xp/coin you want to gamble.');
         }
 
-        let result = ((Math.floor(Math.random() * 2.5 + 0) * Math.floor(amount)));
+        if (amount > 1000) {
+            return message.reply('the maximum gamble amount is 1000 coins!')
+        }
 
-        con.query(`SELECT * FROM xp WHERE id = '${message.author.id}'`, (err, rows) => {
+        const result = ((Math.floor(Math.random() * 2.5 + 0) * Math.floor(amount)));
+
+        Money.findOne({
+            userID: message.author.id,
+            serverID: message.guild.id,
+        }, (err, money) => {
             if (err) {
-                throw err;
+                console.error(err);
+                return message.reply('sorry, an error occurred!');
             }
+            if (!money) {
+                const newMoney = new Money({
+                    userID: message.author.id,
+                    serverID: message.guild.id,
+                    money: 0,
+                });
 
-            let sql;
-            let level;
-            let newXP;
+                newMoney.save().catch(err => console.error(err));
 
-            if(rows.length < 1) {
-                sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${amount})`;
-            }
-            else {
-                let xp = rows[0].xp;
-                newXP = xp - amount + result;
-                sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
-            }
-
-            con.query(sql);
-            
-            if (result === amount) {
-                message.reply(' have your captial back with no profit.');
-            }
-            else if (result > amount) {
-                message.reply(` have gained a profit of ${result - amount} xp, congrats!`);
+                return message.reply('you can\'t participat since you do not have any coins associated with your account');
             }
             else {
-                message. reply(` RIP, you have lost ${amount - result}`);
-            }
- 
-            let VIProle = message.guild.roles.find(role => role.name === 'VIP');
-            let user = message.member;
+                if (amount > money.money) {
+                    return message.reply('you do not have enough coins to gamble!');
+                }
 
-            if (newXP >= config.VIP * config.levelXP && !user.roles.has(VIProle.id)) {
-                console.log('In here');
-                user.addRole(VIProle);
+                money.money = money.money - amount + result;
+                money.save().catch(err => console.error(err));
 
-                let VIPembed = new Discord.RichEmbed()
-                    .setTitle('**Congratulations**, you are offically a **VIP**!!!')
-                    .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                    .setDescription('VIP are granted extra permission to manage some parts of the server.')
-                    .setThumbnail(`${message.author.displayAvatarURL}`)
-                    .addField('XP', newXP, true)
-                    .addField('Level', level, true)
-                    .addField('New Role', 'VIP', true)
-                    .setTimestamp(new Date())
-                    .setFooter('VIP Announcement');
-
-                message.channel.send(VIPembed);
+                if (result === amount) {
+                    return message.reply(' have your captial back with no profit.');
+                }
+                else if (result > amount) {
+                    return message.reply(` have gained a profit of ${result - amount} xp, congrats!`);
+                }
+                else {
+                    return message.reply(` RIP, you have lost ${amount - result}`);
+                }
             }
         });
     },

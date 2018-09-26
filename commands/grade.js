@@ -1,4 +1,4 @@
-const { above100, above92, above88, above80, below80 } = require('../Data/Grade/grade.json');
+const { above100, above92, above88, above80, below80 } = require('../data/Grade/grade.json');
 
 module.exports = {
     name: 'grade',

@@ -11,7 +11,7 @@ module.exports = {
         }
 
         let embed = new Discord.RichEmbed()
-            .setTitle('Curretn PlayingList');
+            .setTitle('Current PlayList');
             
         for(let i = 0; i < queue.length; i++) {
             embed = embed.addField('❯ Video/Song Name:', queue[i]);
