@@ -236,7 +236,7 @@ client.on('messageReactionRemove', (reaction, user) => {
 });
 
 client.on('message', message => {
-    // create a spam detector
+    /* create a spam detector
     spamDetector(client, {
         warnBuffer: 3, // Maximum amount of messages allowed to send in the interval time before getting warned.
         maxBuffer: 7, // Maximum amount of messages allowed to send in the interval time before getting banned.
@@ -246,7 +246,7 @@ client.on('message', message => {
         maxDuplicatesWarning: 7,// Maximum amount of duplicate messages a user can send in a timespan before getting warned
         maxDuplicatesBan: 10, // Maximum amount of duplicate messages a user can send in a timespan before getting banned
         deleteMessagesAfterBanForPastDays: 7 // Delete the spammed messages after banning for the past x days.
-    }, Money, con);
+    }, Money, con); */
 
     // retrieve the current user xp and add additional xp
     if (message.toString()[0] !== config.prefix) {
