@@ -4,7 +4,9 @@
 [![Dependencies](https://img.shields.io/david/expressjs/express.svg)](https://github.com/c3duan/Swag-Bot/blob/master/package.json)
 
 ## Info
-My first ever discord bot using discord.js, it has a total of 70 powerful commands along with a versatile xp database for the server.
+- My first ever discord bot using discord.js, it has a total of 70 powerful commands along with a versatile xp database for the server.
+- Join my **[Server](https://discord.gg/ZG3UCB5)**
+- Invite my **[Swag-Bot](https://discordapp.com/oauth2/authorize?client_id=468360910927560705&scope=bot)**
 
 ## Features
 - 75 Commands in total 
