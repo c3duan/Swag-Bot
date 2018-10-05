@@ -9,12 +9,12 @@
 - Invite my **[Swag-Bot](https://discordapp.com/oauth2/authorize?client_id=468360910927560705&scope=bot)**
 
 ## Features
-- 75 Commands in total 
-- SQL and MongoDB data bases
+- 77 Commands in total 
+- SQL and MongoDB databases
 - Built-in Anti-spam module with punishments
 - Color Roles
 
-## Frameworks
+## Frameworks & Libraries
 - Discord.js
 
 ## APIs
