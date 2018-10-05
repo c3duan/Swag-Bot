@@ -7,6 +7,7 @@
 My first ever discord bot using discord.js, it has a total of 70 powerful commands along with a versatile xp database for the server.
 
 ## Features
+- 75 Commands in total 
 - SQL and MongoDB data bases
 - Built-in Anti-spam module with punishments
 - Color Roles
@@ -112,7 +113,9 @@ My first ever discord bot using discord.js, it has a total of 70 powerful comman
 - coins - check your total coins
 - xp-leader - shows a top 10 leaderboard of total xp
 - coins-leader - shows a top 10 leaderboard of total coins
+- market - server market that provides special roles and additional xp for purchase by coins
 - pay - pay someone a specific amount of coins
+- buy - buy a speical role or a specific amount of xp from the market
 
 ## Issues
 - problemng with resuming song or video

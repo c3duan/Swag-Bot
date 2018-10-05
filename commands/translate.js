@@ -27,7 +27,7 @@ module.exports = {
 				})
 				.catch(() => {
 					return message.channel.send('You didn\'t write any text');
-				})
+				});
 			});
 
 		await message.reply(`Which language would you like to translate to? Either ${this.list(Object.keys(config.translate), 'or')}.\n(please answer this question in 10 seconds)`)
@@ -41,7 +41,7 @@ module.exports = {
 				})
 				.catch(() => {
 					return message.channel.send('You didn\'t write anything');
-				})
+				});
 			});
 
 		if (config.translate[target] || Object.keys(config.translate).find(key => config.translate[key].toLowerCase() === target)) console.log(target);
@@ -58,7 +58,7 @@ module.exports = {
 				})
 				.catch(() => {
 					return message.channel.send('You didn\'t write anything');
-				})
+				});
 			});
 
 		if (config.translate[base] || Object.keys(config.translate).find(key => config.translate[key].toLowerCase() === base)) console.log(base);
