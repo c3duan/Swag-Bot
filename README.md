@@ -29,7 +29,7 @@
 - yandex api
 
 ## Example Config.json
-You need to perssonalize your own config with the following information:
+You need to personalize your own config with the following information:
 - your own bot command prefix
 - your discord bot token
 - various api keys
