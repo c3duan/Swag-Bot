@@ -44,7 +44,8 @@ You need to perssonalize your own config with the following information:
   "swag-api-version": "2.2.7",
   "dog-api": "bark-bark",
   "cat-api": "meow-meow"
-}```
+}
+```
 
 ### Command Trigger Prefix: !
 
