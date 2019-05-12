@@ -55,7 +55,38 @@ module.exports = {
 		if (mode === 'encode') return Buffer.from(text).toString('base64');
 		if (mode === 'decode') return Buffer.from(text, 'base64').toString('utf8') || null;
 		throw new TypeError(`${mode} is not a supported base64 mode.`);
-	},
+  },
+  
+  // http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter by IvÃ¡n -DrSlump- Montes
+  romanize(num) {
+    const lookup = { M:1000, CM:900, D:500, CD:400, C:100, XC:90, L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1 };
+    let roman = '';
+    let i;
+    for (i in lookup) {
+      while (num >= lookup[i]) {
+        roman += i;
+        num -= lookup[i];
+      }
+    }
+    return roman;
+  },
+
+  // http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter by IvÃ¡n -DrSlump- Montes
+  deromanize(roman) {
+    roman = roman.toUpperCase();
+    const lookup = { I:1, V:5, X:10, L:50, C:100, D:500, M:1000 };
+    let arabic = 0;
+    let i = roman.length;
+    while (i--) {
+      if (lookup[roman[i]] < lookup[roman[i+1]]) {
+        arabic -= lookup[roman[i]];
+      }
+      else {
+        arabic += lookup[roman[i]];
+      }
+    }
+    return arabic;
+  },
 
 	hash(text, algorithm) {
 		return crypto.createHash(algorithm).update(text).digest('hex');

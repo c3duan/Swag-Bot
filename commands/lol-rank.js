@@ -37,6 +37,8 @@ module.exports = {
                             -1, // Flex 5v5 index
                             -1, // Flex 3v3 index
                         ];
+
+                        console.log(rank);
         
                         rank.find(function(item, i) {
                             console.log(item.queueType);
@@ -53,12 +55,12 @@ module.exports = {
                                 embed: {
                                     color: (rank[rank_indexes[0]].tier === 'BRONZE') ? 0xcd7f32 : ((rank[rank_indexes[0]].tier === 'SILVER') ? 0x95a5a6 : ((rank[rank_indexes[0]].tier === 'GOLD') ? 0xf1c40f : ((rank[rank_indexes[0]].tier === 'PLATINUM') ? 0x1abc9c : (rank[rank_indexes[0]].tier === 'DIAMOND') ? 0x3498db : 0xf39c12))),
                                     thumbnail: {
-                                        url: (rank[rank_indexes[0]].tier === 'MASTER' || rank[rank_indexes[0]].tier === 'CHALLENGER') ? `attachment://${rank[rank_indexes[0]].tier.toLowerCase()}.png` : `attachment://${rank[rank_indexes[0]].tier.toLowerCase()}_${rank[rank_indexes[0]].rank.toLowerCase()}.png`,
+                                        url: (`https://opgg-static.akamaized.net/images/medals/${rank[rank_indexes[0]].tier.toLowerCase()}_${utility.deromanize(rank[rank_indexes[0]].rank)}.png`),
                                     },
                                     author: {
                                         name: '🏆 Rank info:',
                                     },
-                                    description: '[' + rank[rank_indexes[0]].playerOrTeamName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[0]].playerOrTeamName.indexOf(' ') ? rank[rank_indexes[0]].playerOrTeamName.replace(/ /g, '+') + ')' : rank[rank_indexes[0]].playerOrTeamName + ')'),
+                                    description: '[' + rank[rank_indexes[0]].summonerName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[0]].summonerName.indexOf(' ') ? rank[rank_indexes[0]].summonerName.replace(/ /g, '+') + ')' : rank[rank_indexes[0]].summonerName + ')'),
                                     fields: [
                                         {
                                             name: 'Solo/Duo',
@@ -66,7 +68,6 @@ module.exports = {
                                         },
                                     ],
                                 },
-                                files: [{ attachment: (rank[rank_indexes[0]].tier === 'MASTER' || rank[rank_indexes[0]].tier === 'CHALLENGER') ? `./tier-icons/base-icons/${rank[rank_indexes[0]].tier.toLowerCase()}.png` : `./tier-icons/tier-icons/${rank[rank_indexes[0]].tier.toLowerCase()}_${rank[rank_indexes[0]].rank.toLowerCase()}.png`, name: (rank[rank_indexes[0]].tier === 'MASTER' || rank[rank_indexes[0]].tier === 'CHALLENGER') ? `${rank[rank_indexes[0]].tier.toLowerCase()}.png` : `${rank[rank_indexes[0]].tier.toLowerCase()}_${rank[rank_indexes[0]].rank.toLowerCase()}.png` }],
                             });
                         }
             
@@ -86,12 +87,12 @@ module.exports = {
                                 embed: {
                                     color: (rank[rank_indexes[1]].tier === 'BRONZE') ? 0xcd7f32 : ((rank[rank_indexes[1]].tier === 'SILVER') ? 0x95a5a6 : ((rank[rank_indexes[1]].tier === 'GOLD') ? 0xf1c40f : ((rank[rank_indexes[1]].tier === 'PLATINUM') ? 0x1abc9c : (rank[rank_indexes[1]].tier === 'DIAMOND') ? 0x3498db : 0xf39c12))),
                                     thumbnail: {
-                                        url: (rank[rank_indexes[1]].tier === 'MASTER' || rank[rank_indexes[1]].tier === 'CHALLENGER') ? `attachment://${rank[rank_indexes[1]].tier.toLowerCase()}.png` : `attachment://${rank[rank_indexes[1]].tier.toLowerCase()}_${rank[rank_indexes[1]].rank.toLowerCase()}.png`,
+                                        url: (`https://opgg-static.akamaized.net/images/medals/${rank[rank_indexes[1]].tier.toLowerCase()}_${utility.deromanize(rank[rank_indexes[1]].rank)}.png`),
                                     },
                                     author: {
                                         name: '🏆 Rank info:'
                                     },
-                                    description: '[' + rank[rank_indexes[1]].playerOrTeamName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[1]].playerOrTeamName.indexOf(' ') ? rank[rank_indexes[1]].playerOrTeamName.replace(/ /g, '+') + ')' : rank[rank_indexes[1]].playerOrTeamName + ')'),
+                                    description: '[' + rank[rank_indexes[1]].summonerName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[1]].summonerName.indexOf(' ') ? rank[rank_indexes[1]].summonerName.replace(/ /g, '+') + ')' : rank[rank_indexes[1]].summonerName + ')'),
                                     fields: [
                                         {
                                             name: 'Flex 5v5',
@@ -99,8 +100,6 @@ module.exports = {
                                         },
                                     ],
                                 },
-                                files: [{ attachment: (rank[rank_indexes[1]].tier === 'MASTER' || rank[rank_indexes[1]].tier === 'CHALLENGER') ? `./tier-icons/base-icons/${rank[rank_indexes[1]].tier.toLowerCase()}.png` : `./tier-icons/tier-icons/${rank[rank_indexes[1]].tier.toLowerCase()}_${rank[rank_indexes[1]].rank.toLowerCase()}.png`, name: (rank[rank_indexes[1]].tier === 'MASTER' || rank[rank_indexes[1]].tier === 'CHALLENGER') ? `${rank[rank_indexes[1]].tier.toLowerCase()}.png` : `${rank[rank_indexes[1]].tier.toLowerCase()}_${rank[rank_indexes[1]].rank.toLowerCase()}.png` }],
-        
                             });
                         }
                 
@@ -121,12 +120,12 @@ module.exports = {
                                 embed: {
                                     color: (rank[rank_indexes[2]].tier === 'BRONZE') ? 0xcd7f32 : ((rank[rank_indexes[2]].tier === 'SILVER') ? 0x95a5a6 : ((rank[rank_indexes[2]].tier === 'GOLD') ? 0xf1c40f : ((rank[rank_indexes[2]].tier === 'PLATINUM') ? 0x1abc9c : (rank[rank_indexes[2]].tier === 'DIAMOND') ? 0x3498db : 0xf39c12))),
                                     thumbnail: {
-                                        url: (rank[rank_indexes[2]].tier === 'MASTER' || rank[rank_indexes[2]].tier === 'CHALLENGER') ? `attachment://${rank[rank_indexes[2]].tier.toLowerCase()}.png` : `attachment://${rank[rank_indexes[2]].tier.toLowerCase()}_${rank[rank_indexes[2]].rank.toLowerCase()}.png`,
+                                        url: (`https://opgg-static.akamaized.net/images/medals/${rank[rank_indexes[2]].tier.toLowerCase()}_${utility.deromanize(rank[rank_indexes[2]].rank)}.png`),
                                     },
                                     author: {
                                         name: '🏆 Rank info:',
                                     },
-                                    description: '[' + rank[rank_indexes[2]].playerOrTeamName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[2]].playerOrTeamName.indexOf(' ') ? rank[rank_indexes[2]].playerOrTeamName.replace(/ /g, '+') + ')' : rank[rank_indexes[2]].playerOrTeamName + ')'),
+                                    description: '[' + rank[rank_indexes[2]].summonerName + '](' + 'http://' + config.riot_api_region + '.op.gg/summoner/userName=' + (rank[rank_indexes[2]].summonerName.indexOf(' ') ? rank[rank_indexes[2]].summonerName.replace(/ /g, '+') + ')' : rank[rank_indexes[2]].summonerName + ')'),
                                     fields: [
                                         {
                                             name: 'Flex 3v3',
@@ -134,7 +133,6 @@ module.exports = {
                                         },
                                     ],
                                 },
-                                files: [{ attachment: (rank[rank_indexes[2]].tier === 'MASTER' || rank[rank_indexes[2]].tier === 'CHALLENGER') ? `./tier-icons/base-icons/${rank[rank_indexes[2]].tier.toLowerCase()}.png` : `./tier-icons/tier-icons/${rank[rank_indexes[2]].tier.toLowerCase()}_${rank[rank_indexes[2]].rank.toLowerCase()}.png`, name: (rank[rank_indexes[2]].tier === 'MASTER' || rank[rank_indexes[2]].tier === 'CHALLENGER') ? `${rank[rank_indexes[2]].tier.toLowerCase()}.png` : `${rank[rank_indexes[2]].tier.toLowerCase()}_${rank[rank_indexes[2]].rank.toLowerCase()}.png` }],
                             });
                         }
         

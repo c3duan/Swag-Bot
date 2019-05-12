@@ -28,6 +28,23 @@
 - cat facts api
 - yandex api
 
+## Example Config.json
+You need to perssonalize your own config with the following information:
+- your own bot command prefix
+- your discord bot token
+- various api keys
+- databse host, user & password
+
+```javascript
+{
+  "prefix": "!",
+  "token", "my-token",
+  "swag-api-key": "my-swag-api-key",
+  "swag-api-region": "Duanism",
+  "swag-api-version": "2.2.7",
+  "dog-api": "bark-bark",
+  "cat-api": "meow-meow"
+}```
 
 ### Command Trigger Prefix: !
 

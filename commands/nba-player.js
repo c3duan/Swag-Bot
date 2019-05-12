@@ -111,7 +111,7 @@ module.exports = {
                 });
         }
         catch(err) {
-            return message.reply(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
+            console.error(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
         }
     },
 };
