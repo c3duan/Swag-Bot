@@ -1,7 +1,7 @@
 const music = require('../music.js');
 
 module.exports = {
-    name: 'resume',
+    name: 'volume',
     description: 'resume playing the paused song',
     usage: '[volume]',
     execute(client, kayn, REGIONS, config, message, args, con, guilds) {

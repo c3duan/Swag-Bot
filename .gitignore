@@ -1,4 +1,6 @@
 config.json
 guilds.json
 node_modules
+temp-python
+build
 .vscode
