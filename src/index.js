@@ -113,7 +113,7 @@ client.on('ready', () => {
                 jsonObj.riot_api_version = data[0];
                 fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
                     // Save it to the configuration file.
-                    if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
+                    if (!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
                     else console.log(error('Couldn\'t ') + 'update ' + neutral('configuration file') + ' with latest Riot Api version.');
                 });
             }
@@ -129,7 +129,7 @@ client.on('ready', () => {
 
     // check if the mute session is finished for all the users
     client.setInterval(() => {
-        for(let i in client.mutes) {
+        for (let i in client.mutes) {
             const time = client.mutes[i].time;
             const guildId = client.mutes[i].guild;
             const guild = client.guilds.get(guildId);
@@ -206,34 +206,34 @@ client.on('guildMemberRemove', async member => {
 });
 
 const events = {
-	MESSAGE_REACTION_ADD: 'messageReactionAdd',
-	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+    MESSAGE_REACTION_ADD: 'messageReactionAdd',
+    MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
 };
 
 // raw reaction events
 client.on('raw', async event => {
-	if (!events.hasOwnProperty(event.t)) return;
+    if (!events.hasOwnProperty(event.t)) return;
 
-	const { d: data } = event;
-	const user = client.users.get(data.user_id);
-	const channel = client.channels.get(data.channel_id) || await user.createDM();
+    const { d: data } = event;
+    const user = client.users.get(data.user_id);
+    const channel = client.channels.get(data.channel_id) || await user.createDM();
 
-	if (channel.messages.has(data.message_id)) return;
+    if (channel.messages.has(data.message_id)) return;
 
-	const message = await channel.messages.fetch(data.message_id);
-	const emojiKey = data.emoji.id || data.emoji.name;
-	const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+    const message = await channel.messages.fetch(data.message_id);
+    const emojiKey = data.emoji.id || data.emoji.name;
+    const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
 
-	client.emit(events[event.t], reaction, user);
-	if (message.reactions.size === 1) message.reactions.delete(emojiKey);
+    client.emit(events[event.t], reaction, user);
+    if (message.reactions.size === 1) message.reactions.delete(emojiKey);
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-	console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+    console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
 });
 
 client.on('messageReactionRemove', (reaction, user) => {
-	console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
+    console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
 });
 
 client.on('message', message => {
@@ -259,7 +259,7 @@ client.on('message', message => {
             let sql;
             let newXP;
 
-            if(rows.length < 1) {
+            if (rows.length < 1) {
                 sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${generateXp(10, 30)})`;
             }
             else {
@@ -317,7 +317,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) ||
-                    client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     if (!command) return;
 
