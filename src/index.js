@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const mysql = require('mysql');
 const mongoose = require('mongoose');
 const snekfetch = require('snekfetch');
-const spamDetector = require('./anti_spam.js');
+// const spamDetector = require('./anti_spam.js');
 const Canvas = require('canvas');
 const { Kayn, REGIONS } = require('kayn');
 
