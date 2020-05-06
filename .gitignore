@@ -4,3 +4,4 @@ node_modules
 temp-python
 build
 .vscode
+.env
