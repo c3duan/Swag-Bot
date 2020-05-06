@@ -124,12 +124,12 @@ client.on('ready', () => {
                 console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
             }
 
-            process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
+            process.on('unhandledRejection', err => console.error(`Uncaught Promise Rejection:\n${err}`));
         });
 
     // check if the mute session is finished for all the users
     client.setInterval(() => {
-        for (let i in client.mutes) {
+        for (const i in client.mutes) {
             const time = client.mutes[i].time;
             const guildId = client.mutes[i].guild;
             const guild = client.guilds.get(guildId);
@@ -179,6 +179,7 @@ client.on('guildMemberAdd', async member => {
     ctx.fillText('Welcome to the server,', canvas.width / 2.5, canvas.height / 3.5);
 
     // Add an exclamation point here and below
+    // Note that applyText is never defined, consider defining it
     ctx.font = applyText(canvas, `${member.displayName}!`);
     ctx.fillStyle = '#ffffff';
     ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
@@ -279,8 +280,8 @@ client.on('message', message => {
             }
         });
 
-        /* 
-        * retrieve the current coins and only add additional coins if the message is send 
+        /*
+        * retrieve the current coins and only add additional coins if the message is send
         * in channels from the help category
         */
         if (message.channel.parent.name === 'Help') {
