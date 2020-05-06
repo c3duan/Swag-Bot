@@ -42,7 +42,7 @@
     "lol-stats-api-module": "^1.1.1",
     "math": "0.0.3",
     "mathjs": "^5.7.0",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "mysql": "^2.16.0",
     "node-fetch": "^2.3.0",
     "node-fetch-polyfill": "^2.0.6",
