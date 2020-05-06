@@ -2,9 +2,9 @@
   "name": "swag-bot",
   "version": "2.2.7",
   "description": "My First Ever Discord Bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:server": "cd server && nodemon -q index.js"
   },
   "keywords": [
     "Swag"
