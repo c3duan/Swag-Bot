@@ -11,6 +11,8 @@ const snekfetch = require('snekfetch');
 const Canvas = require('canvas');
 const { Kayn, REGIONS } = require('kayn');
 
+require('dotenv').config()
+
 // create a new riot api module (kayn)
 const kayn = Kayn(config.riot_api_key)({
     region: REGIONS.NORTH_AMERICA,
@@ -371,4 +373,4 @@ client.on('message', message => {
 });
 
 // login to Discord with your app's token
-client.login(config.token);
+client.login(process.env.TOKEN);
