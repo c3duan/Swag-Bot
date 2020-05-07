@@ -59,7 +59,7 @@ for (const file of commandFlies) {
 }
 
 // set up the mysql account info
-const con = mysql.createConnection({
+client.database = mysql.createConnection({
     host: config.mysql_host,
     user: config.mysql_user,
     password: config.mysql_password,
@@ -67,13 +67,13 @@ const con = mysql.createConnection({
 });
 
 // connect to mysql database
-con.connect(err => {
+client.database.connect(err => {
     if (err) {
         console.log(err.message);
         throw err;
     }
     console.log('Connected to mySQL database!');
-    con.query('SHOW TABLES', console.log);
+    client.database.query('SHOW TABLES', console.log);
 });
 
 // connect to mongoose database
@@ -248,11 +248,11 @@ client.on('message', message => {
         maxDuplicatesWarning: 7,// Maximum amount of duplicate messages a user can send in a timespan before getting warned
         maxDuplicatesBan: 10, // Maximum amount of duplicate messages a user can send in a timespan before getting banned
         deleteMessagesAfterBanForPastDays: 7 // Delete the spammed messages after banning for the past x days.
-    }, Money, con); */
+    }, Money, client.database); */
 
     // retrieve the current user xp and add additional xp
     if (message.toString()[0] !== config.prefix) {
-        con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
+        client.database.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
             if (err) {
                 throw err;
             }
@@ -269,7 +269,7 @@ client.on('message', message => {
                 sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
             }
 
-            con.query(sql);
+            client.database.query(sql);
 
             if (message.guild) {
                 const VIProle = message.guild.roles.find(role => role.name === 'VIP');
@@ -364,7 +364,7 @@ client.on('message', message => {
     }
     try {
         console.log(command.name);
-        command.execute(client, kayn, REGIONS, config, message, args, con, guilds);
+        command.execute(client, kayn, REGIONS, config, message, args, client.database, guilds);
     }
     catch (error) {
         console.error(error);
