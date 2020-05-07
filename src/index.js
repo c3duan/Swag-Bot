@@ -11,7 +11,6 @@ const snekfetch = require('snekfetch');
 const Canvas = require('canvas');
 const { Kayn, REGIONS } = require('kayn');
 
-
 // create a new riot api module (kayn)
 const kayn = Kayn(config.riot_api_key)({
     region: REGIONS.NORTH_AMERICA,
@@ -94,7 +93,6 @@ function generateXp(min, max) {
 // - finishes logging in
 // - reconnects after disconnecting
 client.on('ready', () => {
-
     // connect to the riot api
     kayn.DDragon.Version
         .list()
