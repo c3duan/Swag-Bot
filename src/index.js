@@ -7,10 +7,11 @@ const chalk = require('chalk');
 const mysql = require('mysql');
 const mongoose = require('mongoose');
 const snekfetch = require('snekfetch');
-const spamDetector = require('./anti_spam.js');
+// const spamDetector = require('./anti_spam.js');
 const Canvas = require('canvas');
 const { Kayn, REGIONS } = require('kayn');
 
+require('dotenv').config()
 
 // create a new riot api module (kayn)
 const kayn = Kayn(config.riot_api_key)({
@@ -59,7 +60,7 @@ for (const file of commandFlies) {
 }
 
 // set up the mysql account info
-const con = mysql.createConnection({
+client.database = mysql.createConnection({
     host: config.mysql_host,
     user: config.mysql_user,
     password: config.mysql_password,
@@ -67,13 +68,13 @@ const con = mysql.createConnection({
 });
 
 // connect to mysql database
-con.connect(err => {
+client.database.connect(err => {
     if (err) {
         console.log(err.message);
         throw err;
     }
     console.log('Connected to mySQL database!');
-    con.query('SHOW TABLES', console.log);
+    client.database.query('SHOW TABLES', console.log);
 });
 
 // connect to mongoose database
@@ -94,7 +95,6 @@ function generateXp(min, max) {
 // - finishes logging in
 // - reconnects after disconnecting
 client.on('ready', () => {
-
     // connect to the riot api
     kayn.DDragon.Version
         .list()
@@ -113,7 +113,7 @@ client.on('ready', () => {
                 jsonObj.riot_api_version = data[0];
                 fs.writeFile('./config.json', JSON.stringify(jsonObj, null, 4), 'utf-8', (err) => {
                     // Save it to the configuration file.
-                    if(!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
+                    if (!err) console.log(success('Updated ') + 'Riot Api version in ' + neutral('configuration file.'));
                     else console.log(error('Couldn\'t ') + 'update ' + neutral('configuration file') + ' with latest Riot Api version.');
                 });
             }
@@ -124,12 +124,12 @@ client.on('ready', () => {
                 console.log(error('Couldn\'t ') + 'connect to Riot Api. Error code: ' + neutral(err.code));
             }
 
-            process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
+            process.on('unhandledRejection', err => console.error(`Uncaught Promise Rejection:\n${err}`));
         });
 
     // check if the mute session is finished for all the users
     client.setInterval(() => {
-        for(let i in client.mutes) {
+        for (const i in client.mutes) {
             const time = client.mutes[i].time;
             const guildId = client.mutes[i].guild;
             const guild = client.guilds.get(guildId);
@@ -179,6 +179,7 @@ client.on('guildMemberAdd', async member => {
     ctx.fillText('Welcome to the server,', canvas.width / 2.5, canvas.height / 3.5);
 
     // Add an exclamation point here and below
+    // Note that applyText is never defined, consider defining it
     ctx.font = applyText(canvas, `${member.displayName}!`);
     ctx.fillStyle = '#ffffff';
     ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
@@ -206,34 +207,34 @@ client.on('guildMemberRemove', async member => {
 });
 
 const events = {
-	MESSAGE_REACTION_ADD: 'messageReactionAdd',
-	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+    MESSAGE_REACTION_ADD: 'messageReactionAdd',
+    MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
 };
 
 // raw reaction events
 client.on('raw', async event => {
-	if (!events.hasOwnProperty(event.t)) return;
+    if (!events.hasOwnProperty(event.t)) return;
 
-	const { d: data } = event;
-	const user = client.users.get(data.user_id);
-	const channel = client.channels.get(data.channel_id) || await user.createDM();
+    const { d: data } = event;
+    const user = client.users.get(data.user_id);
+    const channel = client.channels.get(data.channel_id) || await user.createDM();
 
-	if (channel.messages.has(data.message_id)) return;
+    if (channel.messages.has(data.message_id)) return;
 
-	const message = await channel.messages.fetch(data.message_id);
-	const emojiKey = data.emoji.id || data.emoji.name;
-	const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+    const message = await channel.messages.fetch(data.message_id);
+    const emojiKey = data.emoji.id || data.emoji.name;
+    const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
 
-	client.emit(events[event.t], reaction, user);
-	if (message.reactions.size === 1) message.reactions.delete(emojiKey);
+    client.emit(events[event.t], reaction, user);
+    if (message.reactions.size === 1) message.reactions.delete(emojiKey);
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-	console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+    console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
 });
 
 client.on('messageReactionRemove', (reaction, user) => {
-	console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
+    console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
 });
 
 client.on('message', message => {
@@ -247,11 +248,11 @@ client.on('message', message => {
         maxDuplicatesWarning: 7,// Maximum amount of duplicate messages a user can send in a timespan before getting warned
         maxDuplicatesBan: 10, // Maximum amount of duplicate messages a user can send in a timespan before getting banned
         deleteMessagesAfterBanForPastDays: 7 // Delete the spammed messages after banning for the past x days.
-    }, Money, con); */
+    }, Money, client.database); */
 
     // retrieve the current user xp and add additional xp
     if (message.toString()[0] !== config.prefix) {
-        con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
+        client.database.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
             if (err) {
                 throw err;
             }
@@ -259,7 +260,7 @@ client.on('message', message => {
             let sql;
             let newXP;
 
-            if(rows.length < 1) {
+            if (rows.length < 1) {
                 sql = `INSERT INTO xp (id, xp) VALUES ('${message.author.id}', ${generateXp(10, 30)})`;
             }
             else {
@@ -268,7 +269,7 @@ client.on('message', message => {
                 sql = `UPDATE xp SET xp = ${newXP} WHERE id = '${message.author.id}'`;
             }
 
-            con.query(sql);
+            client.database.query(sql);
 
             if (message.guild) {
                 const VIProle = message.guild.roles.find(role => role.name === 'VIP');
@@ -279,8 +280,8 @@ client.on('message', message => {
             }
         });
 
-        /* 
-        * retrieve the current coins and only add additional coins if the message is send 
+        /*
+        * retrieve the current coins and only add additional coins if the message is send
         * in channels from the help category
         */
         if (message.channel.parent.name === 'Help') {
@@ -317,7 +318,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) ||
-                    client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     if (!command) return;
 
@@ -363,7 +364,7 @@ client.on('message', message => {
     }
     try {
         console.log(command.name);
-        command.execute(client, kayn, REGIONS, config, message, args, con, guilds);
+        command.execute(client, kayn, REGIONS, config, message, args, client.database, guilds);
     }
     catch (error) {
         console.error(error);
@@ -372,4 +373,4 @@ client.on('message', message => {
 });
 
 // login to Discord with your app's token
-client.login(config.token);
+client.login(process.env.TOKEN);
