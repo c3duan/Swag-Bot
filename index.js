@@ -250,7 +250,7 @@ client.on('message', message => {
     }, Money, con); */
 
     // retrieve the current user xp and add additional xp
-    if (message.toString()[0] !== config.prefix) {
+    if (!message.content.startsWith(config.prefix)) {
         con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
             if (err) {
                 throw err;
