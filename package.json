@@ -38,7 +38,7 @@
     "hoek": "^6.1.2",
     "isomorphic-fetch": "^2.2.1",
     "kayn": "^0.9.8",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "lol-stats-api-module": "^1.1.1",
     "math": "0.0.3",
     "mathjs": "^5.7.0",
