@@ -41,7 +41,7 @@
     "lodash": "^4.17.13",
     "lol-stats-api-module": "^1.1.1",
     "math": "0.0.3",
-    "mathjs": "^5.7.0",
+    "mathjs": "^7.5.1",
     "mongoose": "^5.4.19",
     "mysql": "^2.16.0",
     "node-fetch": "^2.3.0",
