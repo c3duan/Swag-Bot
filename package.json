@@ -34,7 +34,7 @@
     "get-youtube-id": "^1.0.1",
     "google-auth-library": "^4.0.0",
     "googleapis": "^40.0.0",
-    "hawk": "^7.0.10",
+    "hawk": "^9.0.1",
     "hoek": "^6.1.2",
     "isomorphic-fetch": "^2.2.1",
     "kayn": "^0.9.8",
