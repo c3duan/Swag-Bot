@@ -28,7 +28,7 @@
     "dogapi": "^2.8.3",
     "es6-promise": "^4.2.6",
     "eslint": "^5.15.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "ffmpeg": "0.0.4",
     "ffmpeg-binaries": "^4.0.0",
     "get-youtube-id": "^1.0.1",
